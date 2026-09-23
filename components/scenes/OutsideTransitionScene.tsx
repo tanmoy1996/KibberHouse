@@ -5,7 +5,7 @@ export function OutsideTransitionScene() {
   return (
     <SceneScaffold
       id="outside-transition"
-      label="11 / Outside"
+      label="09 / Outside"
       title="Step outside."
       settings={sceneConfig.outsideTransition}
       image={media.home.mountainView}

@@ -5,7 +5,7 @@ export function GettingHereScene() {
   return (
     <SceneScaffold
       id="getting-here"
-      label="15 / Getting here"
+      label="13 / Getting here"
       title="18 km from Kaza."
       settings={sceneConfig.gettingHere}
     >

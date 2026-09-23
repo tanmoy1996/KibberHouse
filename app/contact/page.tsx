@@ -4,6 +4,7 @@ import {
   EditorialBlock,
 } from "@/components/layout/EditorialPage";
 import { contact } from "@/content/contact";
+import { pageHeroes } from "@/content/media";
 export const metadata: Metadata = {
   title: "Contact",
   description: "Contact Kibber House in Kibber Village, Spiti Valley.",
@@ -21,6 +22,7 @@ export default function Page() {
       eyebrow="Contact"
       title="Kibber House"
       introduction="Kibber Village, Spiti Valley, Himachal Pradesh."
+      hero={pageHeroes.house}
     >
       <EditorialBlock
         label="Write to us"

@@ -5,6 +5,7 @@ import {
 } from "@/components/layout/EditorialPage";
 import { activities } from "@/content/activities";
 import { seasons } from "@/content/seasons";
+import { pageHeroes } from "@/content/media";
 export const metadata: Metadata = {
   title: "Things to do",
   description:
@@ -16,6 +17,7 @@ export default function Page() {
       eyebrow="Things to do"
       title="Walk from the door."
       introduction={`${seasons.activityNote} Availability depends on season and conditions.`}
+      hero={pageHeroes.wildlife}
     >
       <EditorialBlock label="Activities" title="Outside the house.">
         <div className="activity-list">

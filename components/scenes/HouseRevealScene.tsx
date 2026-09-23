@@ -1,6 +1,6 @@
 import { SceneScaffold } from "./SceneScaffold";
 import { sceneConfig } from "@/config/scenes";
-import { media } from "@/content/media";
+import { photos } from "@/content/media";
 export function HouseRevealScene() {
   return (
     <SceneScaffold
@@ -8,7 +8,7 @@ export function HouseRevealScene() {
       label="02 / House"
       title="Kibber House"
       settings={sceneConfig.houseReveal}
-      image={media.home.exterior}
+      image={photos.winter}
       reveal
     >
       <p className="mt-6">A family homestay at 4,270 m.</p>

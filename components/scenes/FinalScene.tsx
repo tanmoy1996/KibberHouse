@@ -6,7 +6,7 @@ export function FinalScene() {
   return (
     <SceneScaffold
       id="final"
-      label="17 / Kibber"
+      label="15 / Kibber"
       title="Kibber House"
       settings={sceneConfig.final}
     >

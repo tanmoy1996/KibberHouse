@@ -13,7 +13,6 @@ const routes = [
   "/gallery",
   "/about",
   "/contact",
-  "/book",
   "/privacy",
   "/terms",
 ];
@@ -23,6 +22,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(),
     changeFrequency: route === "" ? "monthly" : "yearly",
     priority:
-      route === "" ? 1 : route === "/book" || route === "/stay" ? 0.8 : 0.6,
+      route === "" ? 1 : route === "/stay" ? 0.8 : 0.6,
   }));
 }

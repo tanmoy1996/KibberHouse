@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { EditorialPage, EditorialBlock } from "@/components/layout/EditorialPage";
-import { photos } from "@/content/media";
+import { pageHeroes, photos } from "@/content/media";
 
 export const metadata: Metadata = {
   title: "Gallery",
@@ -17,7 +17,7 @@ const films = [
 ];
 export default function Page() {
   return (
-    <EditorialPage eyebrow="Gallery" title="A little closer to Kibber." introduction="Step inside the house, look out across the valley, and settle into the everyday rhythm of Kibber.">
+    <EditorialPage eyebrow="Gallery" title="A little closer to Kibber." introduction="Step inside the house, look out across the valley, and settle into the everyday rhythm of Kibber." hero={pageHeroes.house}>
       {collections.map((collection) => (
         <EditorialBlock key={collection.label} label={collection.label} title={collection.title}>
           <div className="photo-gallery">

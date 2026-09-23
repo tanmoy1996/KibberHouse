@@ -8,7 +8,8 @@ import {
 import { MediaPlaceholder } from "@/components/ui/MediaPlaceholder";
 import { rooms, facilities } from "@/content/rooms";
 import { house } from "@/content/house";
-import { photos } from "@/content/media";
+import { pageHeroes, photos } from "@/content/media";
+import { contact } from "@/content/contact";
 export const metadata: Metadata = {
   title: "Rooms",
   description:
@@ -20,6 +21,7 @@ export default function Page() {
       eyebrow="Stay"
       title="Six rooms."
       introduction="One Super Deluxe. Five Deluxe. All have attached bathrooms."
+      hero={pageHeroes.stay}
     >
       <EditorialBlock label="Rooms" title="A warm room at 4,270 m.">
         <figure className="stay-bedroom">
@@ -67,9 +69,9 @@ export default function Page() {
             </div>
           ))}
         </dl>
-        <Link className="button button--primary" href="/book">
-          Check availability
-        </Link>
+        <a className="button button--primary" href={contact.bookingUrl} target="_blank" rel="noopener noreferrer">
+          Check availability on WhatsApp
+        </a>
       </EditorialBlock>
     </EditorialPage>
   );

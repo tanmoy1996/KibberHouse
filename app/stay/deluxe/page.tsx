@@ -5,6 +5,7 @@ import {
 } from "@/components/layout/EditorialPage";
 import { RoomDetails } from "@/components/rooms/RoomDetails";
 import { rooms } from "@/content/rooms";
+import { pageHeroes } from "@/content/media";
 export const metadata: Metadata = {
   title: "Deluxe Rooms",
   description:
@@ -16,6 +17,7 @@ export default function Page() {
       eyebrow="Stay / 02"
       title="Deluxe"
       introduction="Five rooms. Double occupancy. Attached bathrooms."
+      hero={pageHeroes.stay}
     >
       <EditorialBlock label="Room record" title="Deluxe">
         <RoomDetails room={rooms[1]} />

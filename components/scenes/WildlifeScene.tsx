@@ -5,7 +5,7 @@ export function WildlifeScene() {
   return (
     <SceneScaffold
       id="wildlife"
-      label="12 / Wildlife"
+      label="10 / Wildlife"
       title="Look carefully."
       settings={sceneConfig.wildlife}
     >

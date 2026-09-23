@@ -6,7 +6,7 @@ export function HouseLifeScene() {
   return (
     <SceneScaffold
       id="house-life"
-      label="10 / House life"
+      label="08 / House life"
       title="Stay awhile."
       image={photos.waitingArea}
       settings={sceneConfig.houseLife}

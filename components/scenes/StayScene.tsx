@@ -6,7 +6,7 @@ export function StayScene() {
   return (
     <SceneScaffold
       id="stay"
-      label="16 / Stay"
+      label="14 / Stay"
       title="Stay a little longer."
       settings={sceneConfig.stay}
     >

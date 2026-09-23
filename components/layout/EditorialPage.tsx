@@ -1,26 +1,53 @@
 import type { ReactNode } from "react";
+import Image from "next/image";
 import { EntryReady } from "@/components/loading/EntryExperience";
 import { Section } from "./section";
+import type { MediaAsset } from "@/content/media";
 
 export function EditorialPage({
   eyebrow,
   title,
   introduction,
+  hero,
   children,
 }: {
   eyebrow: string;
   title: string;
   introduction: string;
+  hero?: MediaAsset;
   children: ReactNode;
 }) {
   return (
     <>
       <EntryReady />
-      <Section tone="light" className="page-hero" aria-labelledby="page-title">
-        <p className="eyebrow">{eyebrow}</p>
-        <h1 id="page-title">{title}</h1>
-        <p className="page-introduction">{introduction}</p>
-      </Section>
+      {hero ? (
+        <section
+          data-tone="dark"
+          className="page-hero page-hero--image"
+          aria-labelledby="page-title"
+        >
+          <Image
+            src={hero.src}
+            alt={hero.alt}
+            fill
+            priority
+            sizes="100vw"
+            className="page-hero__image"
+          />
+          <div className="page-hero__shade" aria-hidden="true" />
+          <div className="section__content section__content--normal page-hero__copy">
+            <p className="eyebrow">{eyebrow}</p>
+            <h1 id="page-title">{title}</h1>
+            <p className="page-introduction">{introduction}</p>
+          </div>
+        </section>
+      ) : (
+        <Section tone="light" className="page-hero" aria-labelledby="page-title">
+          <p className="eyebrow">{eyebrow}</p>
+          <h1 id="page-title">{title}</h1>
+          <p className="page-introduction">{introduction}</p>
+        </Section>
+      )}
       {children}
     </>
   );

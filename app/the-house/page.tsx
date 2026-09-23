@@ -6,7 +6,7 @@ import {
 import { MediaPlaceholder } from "@/components/ui/MediaPlaceholder";
 import { house } from "@/content/house";
 import { facilities } from "@/content/rooms";
-import { photos } from "@/content/media";
+import { pageHeroes, photos } from "@/content/media";
 export const metadata: Metadata = {
   title: "The House",
   description:
@@ -18,6 +18,7 @@ export default function Page() {
       eyebrow="The house"
       title="Built to be lived in."
       introduction={house.supportingConcept}
+      hero={pageHeroes.house}
     >
       <EditorialBlock label="Inside" title="Six rooms. A greenhouse.">
         <MediaPlaceholder

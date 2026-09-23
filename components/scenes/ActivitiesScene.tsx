@@ -5,7 +5,7 @@ export function ActivitiesScene() {
   return (
     <SceneScaffold
       id="activities"
-      label="13 / Activities"
+      label="11 / Activities"
       title="Walk from the door."
       settings={sceneConfig.activities}
     >

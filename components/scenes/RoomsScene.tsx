@@ -6,7 +6,7 @@ export function RoomsScene() {
   return (
     <SceneScaffold
       id="rooms"
-      label="09 / Stay"
+      label="07 / Stay"
       title="One Super Deluxe. Five Deluxe."
       settings={sceneConfig.rooms}
       image={media.home.roomWide}

@@ -2,9 +2,7 @@ import { SceneRuntime } from "@/components/scenes/SceneRuntime";
 import { MountainOpeningScene } from "@/components/scenes/MountainOpeningScene";
 import { HouseRevealScene } from "@/components/scenes/HouseRevealScene";
 import { FieldDataScene } from "@/components/scenes/FieldDataScene";
-import { WindowApproachScene } from "@/components/scenes/WindowApproachScene";
 import { InteriorRevealScene } from "@/components/scenes/InteriorRevealScene";
-import { RoomScene } from "@/components/scenes/RoomScene";
 import { BedWarmthScene } from "@/components/scenes/BedWarmthScene";
 import { GreenhouseScene } from "@/components/scenes/GreenhouseScene";
 import { RoomsScene } from "@/components/scenes/RoomsScene";
@@ -15,7 +13,6 @@ import { ActivitiesScene } from "@/components/scenes/ActivitiesScene";
 import { SeasonsScene } from "@/components/scenes/SeasonsScene";
 import { GettingHereScene } from "@/components/scenes/GettingHereScene";
 import { StayScene } from "@/components/scenes/StayScene";
-import { FinalScene } from "@/components/scenes/FinalScene";
 
 export default function Home() {
   return (
@@ -24,9 +21,7 @@ export default function Home() {
       <MountainOpeningScene />
       <HouseRevealScene />
       <FieldDataScene />
-      <WindowApproachScene />
       <InteriorRevealScene />
-      <RoomScene />
       <BedWarmthScene />
       <GreenhouseScene />
       <RoomsScene />
@@ -37,7 +32,6 @@ export default function Home() {
       <SeasonsScene />
       <GettingHereScene />
       <StayScene />
-      <FinalScene />
     </div>
   );
 }

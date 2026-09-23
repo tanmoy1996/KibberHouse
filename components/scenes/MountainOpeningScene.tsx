@@ -5,6 +5,7 @@ import { SceneContent } from "./SceneContent";
 import { sceneConfig } from "@/config/scenes";
 import { photos, mediaLoading } from "@/content/media";
 import { house } from "@/content/house";
+import { contact } from "@/content/contact";
 
 export function MountainOpeningScene() {
   return (
@@ -17,7 +18,7 @@ export function MountainOpeningScene() {
           <p>A warm house, wide mountain views, and time to feel at home in Spiti.</p>
           <div className="home-hero__actions">
             <Link className="button button--primary" href="/stay">Explore the rooms</Link>
-            <Link className="home-hero__enquire" href="/book">Plan your stay <span aria-hidden="true">↗</span></Link>
+            <a className="home-hero__enquire" href={contact.bookingUrl} target="_blank" rel="noopener noreferrer">Plan your stay on WhatsApp <span aria-hidden="true">↗</span></a>
           </div>
         </div>
         <a className="home-hero__discover type-label" href="#house-reveal">Discover Kibber House <span aria-hidden="true">↓</span></a>

@@ -5,6 +5,7 @@ import { MediaPlaceholder } from "@/components/ui/MediaPlaceholder";
 import { media } from "@/content/media";
 import { facilities } from "@/content/rooms";
 import { house } from "@/content/house";
+import { contact } from "@/content/contact";
 
 export function RoomDetails({ room }: { room: Room }) {
   return (
@@ -39,9 +40,9 @@ export function RoomDetails({ room }: { room: Room }) {
         ))}
       </dl>
       <p className="button-row">
-        <Link className="button button--primary" href="/book">
-          Check availability
-        </Link>
+        <a className="button button--primary" href={contact.bookingUrl} target="_blank" rel="noopener noreferrer">
+          Check availability on WhatsApp
+        </a>
         <Link className="button button--secondary" href="/stay">
           All rooms
         </Link>

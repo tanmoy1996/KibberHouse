@@ -29,7 +29,6 @@ export const media = {
     landscape: { ...photos.mountains, objectPosition: "center 65%" },
     exterior: photos.exterior,
     window: photos.window,
-    roomPrimary: photos.bedroom,
     bedLayers: null,
     roomWide: photos.bedroom,
     mountainView: photos.fields,
@@ -40,3 +39,20 @@ export const mediaLoading = {
   opening: { priority: true, sizes: "100vw" },
   subsequent: { priority: false, sizes: "100vw" },
 } as const;
+
+export const pageHeroes = {
+  stay: {
+    src: "/media/generated-stay-hero.webp",
+    alt: "Warm wood-lined bedroom at Kibber House overlooking the mountains",
+  },
+  house: {
+    src: "/media/generated-house-hero.webp",
+    alt: "Kibber House among fields and mountains in Spiti Valley",
+  },
+  wildlife: {
+    src: "/media/generated-wildlife-hero.webp",
+    alt: "Snow leopard resting among pale Himalayan rocks",
+  },
+  kibber: photos.fields,
+  gettingHere: photos.villageLife,
+} satisfies Record<string, MediaAsset>;

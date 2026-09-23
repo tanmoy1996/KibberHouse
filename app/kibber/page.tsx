@@ -6,7 +6,7 @@ import {
 import { FieldData } from "@/components/ui/field-data";
 import { MediaPlaceholder } from "@/components/ui/MediaPlaceholder";
 import { house } from "@/content/house";
-import { media } from "@/content/media";
+import { media, pageHeroes } from "@/content/media";
 export const metadata: Metadata = {
   title: "Kibber Village",
   description:
@@ -18,6 +18,7 @@ export default function Page() {
       eyebrow="Kibber · Spiti"
       title="Kibber"
       introduction="A high-altitude village in Spiti Valley, Himachal Pradesh."
+      hero={pageHeroes.kibber}
     >
       <EditorialBlock
         label="Place"

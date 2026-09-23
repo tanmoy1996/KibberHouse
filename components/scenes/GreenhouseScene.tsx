@@ -5,7 +5,7 @@ export function GreenhouseScene() {
   return (
     <SceneScaffold
       id="greenhouse"
-      label="08 / Greenhouse"
+      label="06 / Greenhouse"
       title="−25 °C outside."
       image={photos.greenhouse}
       settings={sceneConfig.greenhouse}

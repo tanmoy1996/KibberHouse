@@ -7,6 +7,7 @@ import {
 } from "@/components/layout/EditorialPage";
 import { activities } from "@/content/activities";
 import { seasons } from "@/content/seasons";
+import { pageHeroes } from "@/content/media";
 export const metadata: Metadata = {
   title: "Wildlife",
   description:
@@ -19,6 +20,7 @@ export default function Page() {
       eyebrow="Wildlife"
       title="Look carefully."
       introduction="Wildlife is seen at distance and on its own terms. Sightings are not guaranteed."
+      hero={pageHeroes.wildlife}
     >
       <EditorialBlock
         label="Snow leopard"

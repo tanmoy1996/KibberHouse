@@ -1,54 +1,54 @@
-"use client";
-import { useCallback, useRef } from "react";
-import { PinnedScene } from "./PinnedScene";
+import { Scene } from "./Scene";
 import { SceneContent } from "./SceneContent";
-import { SceneBackground } from "./SceneBackground";
 import { SceneLabel } from "./SceneLabel";
+import { BedLayersIllustration } from "./BedLayersIllustration";
 import { sceneConfig } from "@/config/scenes";
-import { media } from "@/content/media";
-import { bedLayers } from "@/content/rooms";
-import type { SceneAnimation } from "@/lib/animations/useScrollScene";
+import { house } from "@/content/house";
+
+const warmthDetails = [
+  { value: "7", label: "thoughtful layers" },
+  { value: "2", label: "woollen quilts" },
+  { value: "1", label: "electric blanket" },
+] as const;
+
 export function BedWarmthScene() {
-  const list = useRef<HTMLOListElement>(null);
-  const animate = useCallback<SceneAnimation>((timeline, mode) => {
-    const items = list.current?.children;
-    if (!items) return;
-    timeline
-      .fromTo(
-        items,
-        { y: 0 },
-        {
-          y: mode === "mobile" ? -4 : -10,
-          stagger: 0.07,
-          duration: 0.58,
-          ease: "none",
-        },
-        0.12,
-      )
-      .to(items, { y: 0, stagger: 0.025, duration: 0.22, ease: "none" }, 0.76);
-  }, []);
   return (
-    <PinnedScene
+    <Scene
       id="bed-warmth"
       settings={sceneConfig.bedWarmth}
-      animate={animate}
+      className="bed-story"
       aria-labelledby="bed-title"
     >
-      <SceneBackground image={media.home.bedLayers} />
       <SceneContent>
-        <SceneLabel>07 / Bed</SceneLabel>
-        <h2 id="bed-title" className="scene-heading">
-          Warm before you get in.
-        </h2>
-        <ol ref={list} className="bed-layers">
-          {[...bedLayers].reverse().map((layer, index) => (
-            <li key={`${layer}-${index}`}>
-              <span>{7 - index}</span>
-              {layer}
-            </li>
-          ))}
-        </ol>
+        <div className="bed-story__intro">
+          <div>
+            <SceneLabel>05 / Bed</SceneLabel>
+            <h2 id="bed-title" className="scene-heading">
+              Seven layers.<br />One deeply warm bed.
+            </h2>
+          </div>
+          <p>
+            When winter nights outside reach {house.januaryNight}, warmth is
+            built into every layer before you climb in.
+          </p>
+        </div>
+
+        <div className="bed-story__visual">
+          <BedLayersIllustration />
+          <div className="bed-story__facts" aria-label="Bed warmth details">
+            {warmthDetails.map((detail) => (
+              <div key={detail.label}>
+                <strong>{detail.value}</strong>
+                <span>{detail.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <p className="bed-story__note">
+          Made up before you arrive. Warmed before you get in.
+        </p>
       </SceneContent>
-    </PinnedScene>
+    </Scene>
   );
 }

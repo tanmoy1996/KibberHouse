@@ -5,7 +5,7 @@ export function SeasonsScene() {
   return (
     <SceneScaffold
       id="seasons"
-      label="14 / Seasons"
+      label="12 / Seasons"
       title="The valley changes."
       image={photos.winter}
       settings={sceneConfig.seasons}

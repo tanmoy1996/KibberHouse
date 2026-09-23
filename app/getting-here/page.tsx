@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { photos } from "@/content/media";
+import { pageHeroes, photos } from "@/content/media";
 import type { Metadata } from "next";
 import {
   EditorialPage,
@@ -19,6 +19,7 @@ export default function Page() {
       eyebrow="Getting here"
       title="Kibber Village."
       introduction="Spiti Valley, Himachal Pradesh. Road conditions and transport schedules should be checked close to travel."
+      hero={pageHeroes.gettingHere}
     >
       <EditorialBlock label="Distances" title="From Kaza to Kibber.">
         <div className="scene-field-data">
