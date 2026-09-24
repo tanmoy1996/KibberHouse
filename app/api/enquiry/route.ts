@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { BookingSheetError, createEnquiry } from "@/lib/booking/sheets";
+import { isValidStay, phoneError } from "@/lib/booking/validation";
 
 const required = [
   "checkIn",
@@ -30,22 +32,31 @@ export async function POST(request: Request) {
       { message: "Please complete every required field." },
       { status: 400 },
     );
-  const endpoint = process.env.BOOKING_ENQUIRY_WEBHOOK_URL;
-  if (!endpoint)
+
+  if (!isValidStay(body.checkIn, body.checkOut)) {
     return NextResponse.json(
-      { message: "Online enquiry delivery is not configured yet." },
-      { status: 503 },
+      { message: "Check-out must be after check-in." },
+      { status: 400 },
     );
-  const response = await fetch(endpoint, {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify(body),
-    cache: "no-store",
-  });
-  if (!response.ok)
+  }
+
+  const invalidPhone = phoneError(body.phone);
+  if (invalidPhone) {
+    return NextResponse.json({ message: invalidPhone }, { status: 400 });
+  }
+
+  const payload = Object.fromEntries(
+    Object.entries(body).map(([key, value]) => [key, String(value).trim()]),
+  );
+
+  try {
+    const result = await createEnquiry(payload);
+    return NextResponse.json(result);
+  } catch (error) {
+    const status = error instanceof BookingSheetError ? error.status : 502;
     return NextResponse.json(
       { message: "The enquiry could not be sent. Please email us directly." },
-      { status: 502 },
+      { status },
     );
-  return NextResponse.json({ ok: true });
+  }
 }

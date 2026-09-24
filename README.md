@@ -1,6 +1,6 @@
 # Kibber House
 
-Next.js App Router foundation, shared site shell, and a 17-scene cinematic homepage skeleton. Final scene choreography, photographs, room pages and booking functionality are not implemented.
+Next.js App Router website with a cinematic homepage, editorial room pages, and a Google Sheets-backed booking enquiry and availability flow.
 
 ## Run locally
 
@@ -19,6 +19,9 @@ npm run typecheck
 npm run build
 npm start
 ```
+
+To enable live booking enquiries and availability, follow
+[`docs/google-sheets-booking-setup.md`](docs/google-sheets-booking-setup.md).
 
 Dependencies remain Next.js 16.3.5, React, GSAP and the Tailwind/TypeScript/ESLint toolchain. TypeScript 5.9 and ESLint 9 remain pinned for compatibility with Next's lint plugins. No animation, component, database or smooth-scroll library was added.
 

@@ -42,7 +42,7 @@ export const house = {
     { label: "Pets", value: "Welcome; extra charge applies" },
     { label: "Campfire", value: "On request; extra charge applies" },
     { label: "Quiet hours", value: "From 10:00 PM" },
-    { label: "Government photo ID", value: "Required for one guest per room" },
+    { label: "Government photo ID", value: "Required for all guests" },
     { label: "Laundry", value: "Chargeable on request" },
   ],
 } as const;

@@ -2,9 +2,11 @@
 import { useEffect, useRef, type RefObject, type KeyboardEvent } from "react";
 import Link from "next/link";
 import { navigation } from "@/content/navigation";
+import { contact, contactPeople } from "@/content/contact";
 import { house } from "@/content/house";
 import { BrandMark } from "@/components/ui/BrandMark";
 import { BookCTA } from "@/components/booking/BookCTA";
+import { SocialIcon, type SocialIconName } from "@/components/ui/SocialIcon";
 type MobileMenuProps = {
   id: string;
   open: boolean;
@@ -83,12 +85,18 @@ export function MobileMenu({
       first.focus();
     }
   }
+  const socialLinks: { label: string; icon: SocialIconName; href: string | null }[] = [
+    { label: "Instagram", icon: "instagram", href: contact.instagram },
+    { label: "WhatsApp", icon: "whatsapp", href: contact.whatsapp },
+    { label: "Facebook", icon: "facebook", href: contact.facebook },
+    { label: "Google Maps", icon: "google", href: contact.googleMaps },
+  ];
   return (
     <dialog
       ref={dialogRef}
       id={id}
       className="mobile-menu"
-      data-tone="cold"
+      data-tone="light"
       aria-label="Site navigation"
       onKeyDown={trapFocus}
       onCancel={(event) => {
@@ -99,39 +107,72 @@ export function MobileMenu({
       <div className="mobile-menu__inner">
         <div className="mobile-menu__top">
           <Link href="/" onNavigate={onClose} aria-label="Kibber House — home">
-            <BrandMark variant="light" size="small" />
+            <BrandMark variant="dark" size="small" />
           </Link>
           <button
             ref={closeRef}
             type="button"
-            className="menu-toggle"
+            className="menu-toggle mobile-menu__close"
             onClick={onClose}
           >
             Close<span className="sr-only"> menu</span>
+            <span className="mobile-menu__close-icon" aria-hidden="true" />
           </button>
         </div>
-        <nav aria-label="Mobile navigation" className="mobile-menu__nav">
-          {navigation.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              aria-current={pathname === item.href ? "page" : undefined}
-              onNavigate={onClose}
-            >
-              {item.label}
-            </Link>
-          ))}
+
+        <p className="home-kicker mobile-menu__kicker">Menu</p>
+        {/* Numbered rows with arrows, echoing the home page's labels and line links. */}
+        <nav aria-label="Mobile navigation">
+          <ol className="mobile-menu__nav">
+            {navigation.map((item, index) => (
+              <li key={item.href} style={{ "--i": index } as React.CSSProperties}>
+                <Link
+                  href={item.href}
+                  aria-current={pathname === item.href ? "page" : undefined}
+                  onNavigate={onClose}
+                >
+                  <span className="mobile-menu__index">{String(index + 1).padStart(2, "0")}</span>
+                  <span className="mobile-menu__label">{item.label}</span>
+                  <span className="mobile-menu__arrow" aria-hidden="true" />
+                </Link>
+              </li>
+            ))}
+          </ol>
         </nav>
-        <div className="mobile-menu__booking">
-          <BookCTA variant="overlay" onNavigate={onClose} />
+
+        <BookCTA className="mobile-menu__book" onNavigate={onClose}>
+          Book now
+        </BookCTA>
+
+        <div className="mobile-menu__foot">
+          <div className="mobile-menu__contact">
+            {contact.whatsapp && (
+              <a href={contact.whatsapp} target="_blank" rel="noopener noreferrer">
+                WhatsApp us
+              </a>
+            )}
+            <a href={contactPeople[0].href}>{contactPeople[0].phone}</a>
+          </div>
+          <ul className="mobile-menu__social" aria-label="Kibber House elsewhere">
+            {socialLinks.map((item) =>
+              item.href ? (
+                <li key={item.label}>
+                  <a
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Kibber House on ${item.label}`}
+                  >
+                    <SocialIcon name={item.icon} />
+                  </a>
+                </li>
+              ) : null,
+            )}
+          </ul>
+          <p className="home-kicker mobile-menu__place">
+            Kibber Village · Spiti Valley · {house.altitude}
+          </p>
         </div>
-        <p className="mobile-menu__field type-label">
-          Kibber Village
-          <br />
-          Spiti Valley
-          <br />
-          {house.altitude}
-        </p>
       </div>
     </dialog>
   );

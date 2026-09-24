@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
-import { Fraunces, Karla, IBM_Plex_Mono } from "next/font/google";
+import { Fraunces, Karla, IBM_Plex_Mono, Qwitcher_Grypen } from "next/font/google";
 import { site } from "@/config/site";
+import { shareImage } from "@/lib/seo";
+import { contact } from "@/content/contact";
+import { house } from "@/content/house";
+import { amenities } from "@/content/amenities";
 import { SiteHeader } from "@/components/navigation/SiteHeader";
 import { HeaderAppearanceProvider } from "@/components/navigation/HeaderAppearance";
 import { SiteFooter } from "@/components/layout/SiteFooter";
@@ -24,50 +28,80 @@ const mono = IBM_Plex_Mono({
   variable: "--font-ibm-plex-mono",
   display: "swap",
 });
+const handwritten = Qwitcher_Grypen({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-qwitcher-grypen",
+  display: "swap",
+});
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
-  title: { default: site.title, template: `%s | ${site.title}` },
+  title: { default: site.homeTitle, template: `%s | ${site.title}` },
   description: site.description,
   openGraph: {
     type: "website",
     siteName: site.title,
-    title: site.title,
+    locale: site.locale,
+    title: site.homeTitle,
     description: site.description,
-    url: site.url,
+    url: "/",
+    images: [shareImage],
   },
   twitter: {
     card: "summary_large_image",
-    title: site.title,
+    title: site.homeTitle,
     description: site.description,
+    images: [shareImage.url],
   },
   robots: { index: true, follow: true },
+};
+// Structured data for search: the house, its location, rooms and amenities.
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "LodgingBusiness",
+  "@id": `${site.url}/#house`,
+  name: site.title,
+  url: site.url,
+  description: site.description,
+  image: `${site.url}${shareImage.url}`,
+  email: contact.email,
+  telephone: contact.phone,
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Kibber",
+    addressRegion: "Himachal Pradesh",
+    addressCountry: "IN",
+  },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: contact.coordinates.lat,
+    longitude: contact.coordinates.lng,
+  },
+  hasMap: contact.googleMaps,
+  numberOfRooms: house.rooms,
+  checkinTime: "12:00",
+  checkoutTime: "10:00",
+  petsAllowed: true,
+  amenityFeature: amenities.map((item) => ({
+    "@type": "LocationFeatureSpecification",
+    name: item.title,
+    value: true,
+  })),
+  sameAs: [contact.instagram, contact.facebook].filter(Boolean),
 };
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html
-      lang="en"
-      className={`${display.variable} ${body.variable} ${mono.variable}`}
+      lang="en-IN"
+      className={`${display.variable} ${body.variable} ${mono.variable} ${handwritten.variable}`}
     >
       <body suppressHydrationWarning>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "LodgingBusiness",
-              name: "Kibber House",
-              url: site.url,
-              email: "kibberhouse@gmail.com",
-              description: site.description,
-              address: {
-                "@type": "PostalAddress",
-                addressLocality: "Kibber Village",
-                addressRegion: "Himachal Pradesh",
-                addressCountry: "IN",
-              },
-            }).replace(/</g, "\\u003c"),
+            __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
           }}
         />
         <a className="skip-link" href="#main">

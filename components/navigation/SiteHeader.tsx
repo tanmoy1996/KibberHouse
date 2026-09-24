@@ -7,7 +7,7 @@ import { BrandMark } from "@/components/ui/BrandMark";
 import { BookCTA } from "@/components/booking/BookCTA";
 import { MobileMenu } from "./MobileMenu";
 import { useHeaderAppearance, type HeaderVariant } from "./HeaderAppearance";
-const scrollRules = { nearTop: 40, hideAfter: 120, directionThreshold: 12 };
+const scrollRules = { nearTop: 40 };
 export function SiteHeader({ variant = "light" }: { variant?: HeaderVariant }) {
   const pathname = usePathname();
   const appearance = useHeaderAppearance();
@@ -28,40 +28,18 @@ function HeaderControls({
   variant: HeaderVariant;
 }) {
   const [open, setOpen] = useState(false);
-  const [scroll, setScroll] = useState({ hidden: false, scrolled: false });
+  const [scrolled, setScrolled] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuId = useId();
   const closeMenu = useCallback(() => setOpen(false), []);
   useEffect(() => {
     if (open) return;
-    let previous = window.scrollY;
-    let travel = 0;
-    let direction = 0;
     let frame = 0;
     function update() {
       frame = 0;
       const y = Math.max(0, window.scrollY);
-      const delta = y - previous;
-      const nextDirection = Math.sign(delta);
-      if (nextDirection !== 0 && nextDirection !== direction) travel = 0;
-      if (nextDirection !== 0) direction = nextDirection;
-      travel += Math.abs(delta);
-      previous = y;
-      setScroll((current) => {
-        let hidden = current.hidden;
-        if (
-          y < scrollRules.nearTop ||
-          headerRef.current?.contains(document.activeElement)
-        )
-          hidden = false;
-        else if (travel >= scrollRules.directionThreshold)
-          hidden = direction > 0 && y > scrollRules.hideAfter;
-        const scrolled = y > scrollRules.nearTop;
-        return current.hidden === hidden && current.scrolled === scrolled
-          ? current
-          : { hidden, scrolled };
-      });
+      setScrolled(y > scrollRules.nearTop);
     }
     function onScroll() {
       if (!frame) frame = requestAnimationFrame(update);
@@ -80,13 +58,15 @@ function HeaderControls({
         className="site-header"
         data-variant={variant}
         data-tone={
-          variant === "light" ? "light" : variant === "dark" ? "dark" : "cold"
+          scrolled
+            ? "light"
+            : variant === "light"
+              ? "light"
+              : variant === "dark"
+                ? "dark"
+                : "cold"
         }
-        data-scrolled={scroll.scrolled}
-        data-hidden={scroll.hidden && !open}
-        onFocusCapture={() =>
-          setScroll((current) => ({ ...current, hidden: false }))
-        }
+        data-scrolled={scrolled}
       >
         <div className="site-header__inner">
           <Link
@@ -95,7 +75,7 @@ function HeaderControls({
             aria-label="Kibber House — home"
           >
             <BrandMark
-              variant={variant === "light" ? "dark" : "light"}
+              variant={scrolled || variant === "light" ? "dark" : "light"}
               size="small"
             />
           </Link>
@@ -111,10 +91,10 @@ function HeaderControls({
             ))}
           </nav>
           <BookCTA
-            variant={variant === "light" ? "compact" : "overlay"}
+            variant={scrolled || variant === "light" ? "compact" : "overlay"}
             className="site-header__book"
           >
-            Book
+            Book now
           </BookCTA>
           <button
             ref={triggerRef}

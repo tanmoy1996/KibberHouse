@@ -9,12 +9,15 @@ export function EditorialPage({
   title,
   introduction,
   hero,
+  compact = false,
   children,
 }: {
   eyebrow: string;
   title: string;
   introduction: string;
   hero?: MediaAsset;
+  /** Without a hero image: a short title band instead of the tall one. */
+  compact?: boolean;
   children: ReactNode;
 }) {
   return (
@@ -25,6 +28,7 @@ export function EditorialPage({
           data-tone="dark"
           className="page-hero page-hero--image"
           aria-labelledby="page-title"
+          data-header-overlay
         >
           <Image
             src={hero.src}
@@ -42,7 +46,11 @@ export function EditorialPage({
           </div>
         </section>
       ) : (
-        <Section tone="light" className="page-hero" aria-labelledby="page-title">
+        <Section
+          tone="light"
+          className={compact ? "page-hero page-hero--compact" : "page-hero"}
+          aria-labelledby="page-title"
+        >
           <p className="eyebrow">{eyebrow}</p>
           <h1 id="page-title">{title}</h1>
           <p className="page-introduction">{introduction}</p>
@@ -68,6 +76,7 @@ export function EditorialBlock({
     <Section
       tone={tone}
       className="editorial-block"
+      id={slug(label)}
       aria-labelledby={`${slug(label)}-title`}
     >
       <div className="editorial-grid">

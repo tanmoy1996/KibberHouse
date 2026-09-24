@@ -1,7 +1,6 @@
 "use client";
 
 import type { ComponentProps } from "react";
-import { contact } from "@/content/contact";
 import { cn } from "@/lib/utils/cn";
 type BookCTAProps = Omit<ComponentProps<"a">, "href"> & {
   variant?: "compact" | "default" | "overlay";
@@ -18,9 +17,7 @@ export function BookCTA({
   return (
     <a
       {...props}
-      href={contact.bookingUrl}
-      target="_blank"
-      rel="noopener noreferrer"
+      href="/book"
       onClick={(event) => {
         onClick?.(event);
         if (!event.defaultPrevented) onNavigate?.();

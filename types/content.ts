@@ -5,6 +5,9 @@ export type Room = {
   bathroom: "attached";
   occupancy: "double";
   extraBed: "available on request";
+  layout: string;
+  view: string;
+  summary: string;
 };
 export type Activity = {
   id: string;

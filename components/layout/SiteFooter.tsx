@@ -1,17 +1,18 @@
 import Link from "next/link";
 import { BrandMark } from "@/components/ui/BrandMark";
+import { SocialIcon, type SocialIconName } from "@/components/ui/SocialIcon";
 import {
   navigation,
-  secondaryNavigation,
   legalNavigation,
 } from "@/content/navigation";
-import { contact } from "@/content/contact";
+import { contact, contactPeople } from "@/content/contact";
 import { house } from "@/content/house";
 export function SiteFooter() {
-  const socialLinks = [
-    { label: "Instagram", href: contact.instagram },
-    { label: "WhatsApp", href: contact.whatsapp },
-    { label: "Google Maps", href: contact.googleMaps },
+  const socialLinks: { label: string; icon: SocialIconName; href: string | null }[] = [
+    { label: "Instagram", icon: "instagram", href: contact.instagram },
+    { label: "WhatsApp", icon: "whatsapp", href: contact.whatsapp },
+    { label: "Facebook", icon: "facebook", href: contact.facebook },
+    { label: "Google Maps", icon: "google", href: contact.googleMaps },
   ];
   return (
     <footer className="site-footer" data-tone="cold">
@@ -23,6 +24,32 @@ export function SiteFooter() {
             </Link>
             <p>A family homestay at {house.altitude}.</p>
           </div>
+          <dl className="site-footer__data">
+            <div>
+              <dt>Address</dt>
+              <dd>
+                Kibber Village, Spiti Valley
+                <br />
+                Himachal Pradesh · {house.altitude}
+              </dd>
+            </div>
+            {contactPeople.map((person) => (
+              <div key={person.href}>
+                <dt>Tel · {person.name}</dt>
+                <dd>
+                  <a href={person.href}>{person.phone}</a>
+                </dd>
+              </div>
+            ))}
+            {contact.email && (
+              <div>
+                <dt>Email</dt>
+                <dd>
+                  <a href={`mailto:${contact.email}`}>{contact.email}</a>
+                </dd>
+              </div>
+            )}
+          </dl>
           <nav aria-label="Footer navigation">
             {navigation.map((item) => (
               <Link key={item.href} href={item.href}>
@@ -30,30 +57,27 @@ export function SiteFooter() {
               </Link>
             ))}
           </nav>
-          <nav aria-label="More from Kibber House">
-            {secondaryNavigation.map((item) => (
-              <Link key={item.href} href={item.href}>
-                {item.label}
-              </Link>
-            ))}
-            {socialLinks.map((item) =>
-              item.href ? (
-                <a key={item.label} href={item.href}>
-                  {item.label}
-                </a>
-              ) : null,
-            )}
-            {contact.email && <a href={`mailto:${contact.email}`}>Email</a>}
-            {contact.phone && <a href={`tel:${contact.phone}`}>Telephone</a>}
-          </nav>
         </div>
         <div className="site-footer__bottom">
-          <p className="type-label">
-            Kibber Village · Spiti Valley
-            <br />
-            Himachal Pradesh · {house.altitude}
-          </p>
+          <ul className="site-footer__social" aria-label="Kibber House elsewhere">
+            {socialLinks.map((item) =>
+              item.href ? (
+                <li key={item.label}>
+                  <a
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Kibber House on ${item.label}`}
+                    title={item.label}
+                  >
+                    <SocialIcon name={item.icon} />
+                  </a>
+                </li>
+              ) : null,
+            )}
+          </ul>
           <ul className="site-footer__legal" aria-label="Legal information">
+            <li>© Kibber House</li>
             {legalNavigation.map((item) => (
               <li key={item.label}>
                 <Link href={item.href}>{item.label}</Link>

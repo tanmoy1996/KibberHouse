@@ -15,12 +15,12 @@ export function RoomsScene() {
         <article>
           <p className="type-label">1 room</p>
           <h3>Super Deluxe</h3>
-          <Link href="/stay/super-deluxe">View room →</Link>
+          <Link href="/stay#super-deluxe">View room →</Link>
         </article>
         <article>
           <p className="type-label">5 rooms</p>
           <h3>Deluxe</h3>
-          <Link href="/stay/deluxe">View rooms →</Link>
+          <Link href="/stay#deluxe">View rooms →</Link>
         </article>
       </div>
     </SceneScaffold>
