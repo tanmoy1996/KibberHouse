@@ -16,7 +16,10 @@ export default function Page() {
       <h2>Enquiries and confirmation</h2>
       <p>
         Dates, room choice and rates are confirmed directly by Kibber House. Your stay is
-        booked only once we have confirmed it with you. Rates are available on request.
+        booked only once we have confirmed it with you. Published rates are in Indian rupees,
+        per room per night for two guests sharing, and exclude taxes where applicable; US
+        dollar figures are approximate. Amounts shown on the booking page are estimates, and
+        the rate we confirm for your dates is final.
       </p>
       <h2>Experiences</h2>
       <p>

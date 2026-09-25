@@ -1,10 +1,13 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { contact, contactPeople } from "@/content/contact";
 import { house } from "@/content/house";
 import { photos, type MediaAsset } from "@/content/media";
+import { tariff, type MealCode } from "@/content/tariff";
+import { estimateStay, formatInr, formatUsd } from "@/lib/booking/estimate";
 import type { AvailabilityResponse } from "@/lib/booking/types";
 import { isIsoDate, isValidStay, phoneError } from "@/lib/booking/validation";
 
@@ -185,6 +188,10 @@ export function BookingEnquiryForm() {
   const nights = validStay ? nightsBetween(checkIn, checkOut) : 0;
   const mealPlan = mealOptions.find((plan) => plan.value === meal);
   const roomLabel = roomOptions.find((option) => option.value === room)?.label;
+  const estimate =
+    validStay && mealPlan
+      ? estimateStay({ checkIn, nights, adults, children, roomName: room, meal: mealPlan.code as MealCode })
+      : null;
 
   return (
     <form className="book-form" onSubmit={submit} aria-describedby="booking-note">
@@ -360,6 +367,50 @@ export function BookingEnquiryForm() {
             </dd>
           </div>
         </dl>
+
+        <div className="book-estimate" aria-live="polite">
+          <p className="home-kicker">Estimated tariff</p>
+          {!estimate && <p className="book-estimate__empty">Choose your dates to see the amount.</p>}
+          {estimate?.kind === "on-request" && (
+            <p className="book-estimate__empty">
+              Stays between {tariff.onRequest.dates} are quoted on request. Send your enquiry and we will
+              write back with a rate.
+            </p>
+          )}
+          {estimate?.kind === "priced" && (
+            <>
+              <ul className="book-estimate__lines">
+                {estimate.lines.map((line) => (
+                  <li key={line.label}>
+                    <span>
+                      {line.label}
+                      <small>{line.detail}</small>
+                    </span>
+                    <span className="price price--small">
+                      <strong>{formatUsd(line.amount)}</strong>
+                      <span>{formatInr(line.amount)}</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              <p className="book-estimate__total">
+                <span>Total</span>
+                <span className="price">
+                  <strong>{formatUsd(estimate.total)}</strong>
+                  <span>{formatInr(estimate.total)}</span>
+                </span>
+              </p>
+              <p className="book-estimate__note">
+                {room === "Any" && "Priced as Deluxe. "}
+                Children at the 5–11 rate; under 5 stay free. Charged in rupees; dollars are
+                approximate. Taxes extra where applicable. The rate we confirm is final.
+              </p>
+            </>
+          )}
+          <p className="book-estimate__discount">
+            Longer stay, group or returning guest? <Link href="/contact">Contact us for a discount.</Link>
+          </p>
+        </div>
 
         <div className="book-summary__availability" aria-live="polite" data-state={availability.kind}>
           {availability.kind === "idle" && validStay && "Checking live availability…"}

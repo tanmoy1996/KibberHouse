@@ -10,6 +10,9 @@ import { amenities } from "@/content/amenities";
 import { house } from "@/content/house";
 import { photos, type MediaAsset } from "@/content/media";
 import { bedLayers, rooms } from "@/content/rooms";
+import { tariff, type MealCode } from "@/content/tariff";
+import { contact } from "@/content/contact";
+import { formatInr, formatUsd } from "@/lib/booking/estimate";
 
 export const metadata = pageMetadata({
   title: "Rooms & the house",
@@ -56,6 +59,8 @@ const warmth = [
     text: "A generator keeps the lights and blankets on when the mountain grid goes down.",
   },
 ];
+
+const both = (amount: number) => `${formatUsd(amount)} (${formatInr(amount)})`;
 
 const sentence = (value: string) => value.charAt(0).toUpperCase() + value.slice(1);
 
@@ -149,12 +154,83 @@ export default function Page() {
                     {sentence(room.extraBed)}
                   </li>
                 </ul>
+                <div className="stay-rate">
+                  <div>
+                    <p className="home-kicker">Room rent · per night, two guests</p>
+                    <p className="stay-rate__note">
+                      Tea twice daily included. <a href="#meals">Meals extra</a>.
+                    </p>
+                  </div>
+                  <p className="price">
+                    <strong>{formatUsd(tariff.rooms[room.id].on)}</strong>
+                    <span>{formatInr(tariff.rooms[room.id].on)}</span>
+                  </p>
+                </div>
                 <Link className="home-line-link" href={`/book?room=${encodeURIComponent(room.name)}`}>
                   book the {room.name.toLowerCase()}
                 </Link>
               </article>
             );
           })}
+        </div>
+      </section>
+
+      {/* 3b · Rates beyond the room: extra guests, exclusions, discounts. */}
+      <section id="rates" className="stay-rates" data-tone="light" aria-labelledby="rates-title">
+        <div className="stay-rates__inner">
+          <header data-reveal="fade">
+            <p className="home-kicker">Tariff</p>
+            <h2 id="rates-title">How the rates work</h2>
+            <p>
+              Room rent plus your meal plan, per room per night for two. You pay in Indian
+              rupees; dollar figures are a guide at ₹{tariff.usdRate} to $1. Taxes are extra
+              where applicable.
+            </p>
+          </header>
+          <dl className="book-policies__list" data-reveal="fade">
+            <div>
+              <dt>{tariff.onRequest.dates}</dt>
+              <dd>{tariff.onRequest.note}</dd>
+            </div>
+            <div>
+              <dt>Extra adult</dt>
+              <dd>
+                {both(tariff.extraAdult.on)} per night
+              </dd>
+            </div>
+            <div>
+              <dt>Child 5–11</dt>
+              <dd>
+                {both(tariff.child.on)} per night. Under 5
+                stays free sharing a bed; 12 and over is charged as an adult.
+              </dd>
+            </div>
+            <div>
+              <dt>Groups &amp; whole house</dt>
+              <dd>Six rooms take a group of twelve. Special rates on request, in any season.</dd>
+            </div>
+            <div className="stay-rates__wide">
+              <dt>Not included</dt>
+              <dd>{tariff.notIncluded.join(" · ")}</dd>
+            </div>
+          </dl>
+          <aside className="stay-rates__discount" data-reveal="fade">
+            <p className="home-kicker">Looking for a better rate?</p>
+            <p>
+              Staying longer, travelling as a group or coming back to us? Get in touch
+              and ask about a discount.
+            </p>
+            <div>
+              {contact.whatsapp && (
+                <a className="home-line-link" href={contact.whatsapp} target="_blank" rel="noopener noreferrer">
+                  whatsapp us
+                </a>
+              )}
+              <Link className="home-line-link" href="/contact">
+                contact us
+              </Link>
+            </div>
+          </aside>
         </div>
       </section>
 
@@ -187,12 +263,22 @@ export default function Page() {
               </ul>
             </div>
             <div data-reveal="fade">
-              <p className="home-kicker">Meal plans</p>
+              <p className="home-kicker">Meal plans · per room per night, on top of room rent</p>
               <dl className="stay-meals">
                 {house.mealPlans.map((plan) => (
                   <div key={plan.code}>
                     <dt>{plan.code}</dt>
                     <dd>{plan.description}</dd>
+                    <dd className="price price--small">
+                      {tariff.meals[plan.code as MealCode] ? (
+                        <>
+                          <strong>+{formatUsd(tariff.meals[plan.code as MealCode])}</strong>
+                          <span>+{formatInr(tariff.meals[plan.code as MealCode])}</span>
+                        </>
+                      ) : (
+                        <strong>Included</strong>
+                      )}
+                    </dd>
                   </div>
                 ))}
               </dl>
