@@ -12,7 +12,7 @@ const base = photos.bedDetail;
 const roomTypes: { label: string; href: string; photo: MediaAsset }[] = [
   { label: "Deluxe room", href: "/stay#deluxe", photo: photos.bedroom },
   // Placeholder until a photo of the Super Deluxe room itself is supplied.
-  { label: "Super Deluxe suite", href: "/stay#super-deluxe", photo: photos.roomSunset },
+  { label: "Super Deluxe suite", href: "/stay#super-deluxe", photo: photos.superDeluxe },
 ];
 
 export function HomeRoomsBanner() {

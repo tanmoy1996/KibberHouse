@@ -22,12 +22,12 @@ export const metadata = pageMetadata({
 });
 
 const roomPhotos: Record<(typeof rooms)[number]["id"], MediaAsset & { width: number; height: number }> = {
-  "super-deluxe": photos.roomSunset,
+  "super-deluxe": photos.superDeluxe,
   deluxe: photos.bedroom,
 };
 
 const housePhotos = [
-  photos.exterior,
+  photos.exteriorSnow,
   photos.commonSpace,
   photos.greenhouse,
   photos.window,
@@ -263,7 +263,7 @@ export default function Page() {
               </ul>
             </div>
             <div data-reveal="fade">
-              <p className="home-kicker">Meal plans · per room per night, on top of room rent</p>
+              <p className="home-kicker">Meal plans · per head per night, on top of room rent</p>
               <dl className="stay-meals">
                 {house.mealPlans.map((plan) => (
                   <div key={plan.code}>

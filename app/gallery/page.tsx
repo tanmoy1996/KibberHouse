@@ -3,12 +3,12 @@ import Link from "next/link";
 import { EntryReady } from "@/components/loading/EntryExperience";
 import { HomeMotion } from "@/components/home/HomeMotion";
 import { GalleryGrid } from "@/components/gallery/GalleryGrid";
-import { photos } from "@/content/media";
+import { photos, wildlife } from "@/content/media";
 
 export const metadata = pageMetadata({
   title: "Gallery",
   description:
-    "Photos and films of Kibber House and life in Kibber: wood-lined rooms, the greenhouse lounge, Key Monastery, village fields and the Spiti night sky.",
+    "Photos and films of Kibber House and life in Kibber: wood-lined rooms, the greenhouse lounge, Key Monastery, village fields, snow leopards, ibex and the Spiti night sky.",
   path: "/gallery",
 });
 
@@ -19,7 +19,7 @@ const collections = [
     label: "At home",
     title: "A look around the house",
     images: [
-      photos.exterior,
+      photos.exteriorSnow,
       photos.bedroom,
       photos.bedDetail,
       photos.commonSpace,
@@ -44,9 +44,48 @@ const collections = [
       photos.fields,
       photos.keyMonastery,
       photos.yak,
-      photos.ibex,
       photos.night,
-      photos.nightVision,
+    ],
+  },
+  {
+    id: "wildlife",
+    label: "Wildlife",
+    title: "Neighbours on the high slopes",
+    images: [
+      wildlife.leopardCub,
+      wildlife.ibexSnowfall,
+      wildlife.foxDen,
+      wildlife.leopardRockWall,
+      wildlife.bharalRidge,
+      wildlife.lammergeierGrass,
+      wildlife.leopardSnowDescent,
+      wildlife.ibexHerd,
+      wildlife.foxSnowSitting,
+      wildlife.leopardFamilyCliff,
+      wildlife.ibexMist,
+      wildlife.goldenEagleNest,
+      wildlife.leopardSnowClose,
+      wildlife.bharalPair,
+      wildlife.lammergeierScree,
+      wildlife.leopardYawnCub,
+      wildlife.ibexGrazingSnow,
+      wildlife.foxSnowStanding,
+      wildlife.leopardsLedge,
+      wildlife.ibexRestingSnow,
+      wildlife.lammergeierSnowRocks,
+      wildlife.leopardScree,
+      wildlife.bharalBacklit,
+      wildlife.foxByRock,
+      wildlife.leopardsCave,
+      wildlife.ibexPortrait,
+      wildlife.lammergeierOverSnow,
+      wildlife.leopardSnowShadow,
+      wildlife.lammergeierPerched,
+      wildlife.leopardCliffCurled,
+      wildlife.lammergeierBlueSky,
+      wildlife.leopardLedgeWalk,
+      wildlife.lammergeierJuvenile,
+      wildlife.leopardSlope,
     ],
   },
 ];

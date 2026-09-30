@@ -143,6 +143,24 @@
       linear-gradient(180deg, rgb(9 14 19 / 42%) 0%, transparent 30%),
       linear-gradient(0deg, rgb(9 14 19 / 38%) 0%, transparent 40%);
   }
+  /* Sits in the sky, below the overlaid header and clear of the house. */
+  /* `.home` prefix outranks the generic `.home p` body size. */
+  .home .home-hero__tagline {
+    position: absolute;
+    inset: calc(var(--header-height) + clamp(1rem, 6vh, 4rem)) 1.5rem auto;
+    z-index: 2;
+    max-width: none;
+    margin: 0;
+    color: #ffffff;
+    font: 400 clamp(2.4rem, 1.6rem + 3vw, 5rem)/1.15 var(--font-parisienne), cursive;
+    text-align: center;
+    /* A soft dark glow keeps the white script readable over snow and sky. */
+    text-shadow: 0 0 2px rgb(0, 0, 0), 0 0 5px rgb(0, 0, 0), 0 0 26px rgba(0, 0, 0, 0.65);
+    animation: home-tagline-in 1.4s 0.4s var(--home-ease) both;
+  }
+  @keyframes home-tagline-in {
+    from { opacity: 0; transform: translateY(1rem); }
+  }
   .home-hero__scroll {
     position: absolute;
     left: 50%;
@@ -764,6 +782,13 @@
   .home-hero__scroll {
     display: none;
   }
+  /* Each phrase on its own line rather than an arbitrary wrap. */
+  .home-hero__tagline span {
+    display: block;
+  }
+  .home .home-hero__tagline {
+    top: calc(var(--header-height) + 6.5rem);
+  }
   .home-availability {
     position: static;
     width: auto;
@@ -881,7 +906,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .home-hero__scroll i {
+  .home-hero__scroll i,
+  .home-hero__tagline {
     animation: none;
   }
   .home-promos__image img,
@@ -3429,9 +3455,6 @@ body:has(.mobile-menu[data-open="true"]) .whatsapp-fab { visibility: hidden; }
   }
   .experiences-page .experiences-feature .experiences-note {
     margin: -0.5rem 0 1.75rem;
-  }
-  .experiences-feature__credit {
-    margin-top: 2.5rem;
   }
   .experiences-chapter {
     padding-block: clamp(4rem, 8vw, 6.5rem);

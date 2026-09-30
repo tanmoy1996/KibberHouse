@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, Karla, IBM_Plex_Mono, Qwitcher_Grypen } from "next/font/google";
+import { Fraunces, Karla, IBM_Plex_Mono, Qwitcher_Grypen, Parisienne } from "next/font/google";
 import { site } from "@/config/site";
 import { shareImage } from "@/lib/seo";
 import { contact } from "@/content/contact";
@@ -32,6 +32,12 @@ const handwritten = Qwitcher_Grypen({
   subsets: ["latin"],
   weight: ["400"],
   variable: "--font-qwitcher-grypen",
+  display: "swap",
+});
+const script = Parisienne({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-parisienne",
   display: "swap",
 });
 export const metadata: Metadata = {
@@ -95,7 +101,7 @@ export default function RootLayout({
   return (
     <html
       lang="en-IN"
-      className={`${display.variable} ${body.variable} ${mono.variable} ${handwritten.variable}`}
+      className={`${display.variable} ${body.variable} ${mono.variable} ${handwritten.variable} ${script.variable}`}
     >
       <body suppressHydrationWarning>
         <script

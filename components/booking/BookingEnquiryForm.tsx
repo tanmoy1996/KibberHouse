@@ -20,7 +20,7 @@ type Status = {
 const roomOptions: { value: string; label: string; note: string; photo: MediaAsset }[] = [
   { value: "Any", label: "No preference", note: "Whichever suits your dates", photo: photos.bedDetail },
   { value: "Deluxe", label: "Deluxe", note: `${house.roomCategories.deluxe} rooms · mountain view`, photo: photos.bedroom },
-  { value: "Super Deluxe", label: "Super Deluxe", note: `${house.roomCategories.superDeluxe} suite · with an extra room`, photo: photos.roomSunset },
+  { value: "Super Deluxe", label: "Super Deluxe", note: `${house.roomCategories.superDeluxe} suite · with an extra room`, photo: photos.superDeluxe },
 ];
 
 const mealValues: Record<string, string> = {

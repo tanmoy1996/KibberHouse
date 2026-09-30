@@ -10,7 +10,7 @@ import { contact } from "@/content/contact";
 export function MountainOpeningScene() {
   return (
     <Scene id="mountains" settings={sceneConfig.mountains} className="home-hero" aria-labelledby="mountains-title">
-      <SceneBackground image={photos.exterior} {...mediaLoading.opening} />
+      <SceneBackground image={photos.exteriorSnow} {...mediaLoading.opening} />
       <SceneContent className="home-hero__content">
         <div className="home-hero__copy">
           <p className="type-label">Kibber Village · Spiti Valley · {house.altitude}</p>

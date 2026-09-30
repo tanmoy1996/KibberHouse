@@ -9,7 +9,7 @@ import { FacilityIcon } from "./FacilityIcon";
 import { contact, contactPeople } from "@/content/contact";
 import { house } from "@/content/house";
 import { amenities } from "@/content/amenities";
-import { photos } from "@/content/media";
+import { photos, wildlife } from "@/content/media";
 import { wildlifePhotos } from "@/content/wildlife-media";
 import { PhotoCredit } from "@/components/ui/PhotoCredit";
 
@@ -36,9 +36,9 @@ const promos = [
 const gallery = [
   photos.commonSpace,
   photos.bedDetail,
-  photos.ibex,
+  wildlife.ibexSnowfall,
   photos.fields,
-  photos.nightVision,
+  photos.night,
   photos.window,
   photos.winter,
   photos.dryFruit,
@@ -53,14 +53,18 @@ export function HomePage() {
       <section className="home-hero" data-tone="dark" aria-label="Kibber House">
         <div className="home-hero__media">
           <Image
-            src={photos.exterior.src}
-            alt={photos.exterior.alt}
+            src={photos.exteriorSnow.src}
+            alt={photos.exteriorSnow.alt}
             fill
             preload
             sizes="100vw"
             className="home-hero__image"
+            style={{ objectPosition: photos.exteriorSnow.objectPosition }}
           />
           <div className="home-hero__veil" aria-hidden="true" />
+          <p className="home-hero__tagline">
+            <span>Arrive as a guest.</span> <span>Leave as family!</span>
+          </p>
           <a className="home-hero__scroll" href="#welcome">
             <span>Scroll down</span>
             <i aria-hidden="true" />
