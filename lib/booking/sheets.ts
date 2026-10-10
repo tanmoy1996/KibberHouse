@@ -60,7 +60,7 @@ export async function createEnquiry(payload: Record<string, string>) {
   const response = await sheetFetch(endpoint, {
     method: "POST",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify({ action: "createEnquiry", secret, ...payload }),
+    body: JSON.stringify({ ...payload, action: "createEnquiry", secret }),
   });
 
   const result = (await response.json()) as {
