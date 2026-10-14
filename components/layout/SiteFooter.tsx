@@ -12,6 +12,7 @@ export function SiteFooter() {
     { label: "Instagram", icon: "instagram", href: contact.instagram },
     { label: "WhatsApp", icon: "whatsapp", href: contact.whatsapp },
     { label: "Facebook", icon: "facebook", href: contact.facebook },
+    { label: "YouTube", icon: "youtube", href: contact.youtube },
     { label: "Google Maps", icon: "google", href: contact.googleMaps },
   ];
   return (

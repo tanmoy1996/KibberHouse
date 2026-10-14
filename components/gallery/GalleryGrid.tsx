@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { MediaAsset } from "@/content/media";
+import { ImageCredit } from "@/components/ui/ImageCredit";
 
 type Photo = MediaAsset & { width: number; height: number };
 
@@ -51,6 +52,7 @@ export function GalleryGrid({ photos, label }: { photos: Photo[]; label: string 
               <span className="gallery-masonry__caption" aria-hidden="true">
                 {photo.alt}
               </span>
+              <ImageCredit photo={photo} />
             </button>
           </li>
         ))}
@@ -66,6 +68,7 @@ export function GalleryGrid({ photos, label }: { photos: Photo[]; label: string 
       >
         {current && (
           <figure className="gallery-lightbox__figure">
+            <div className="gallery-lightbox__photo">
             <Image
               key={String(current.src)}
               src={current.src}
@@ -75,6 +78,8 @@ export function GalleryGrid({ photos, label }: { photos: Photo[]; label: string 
               sizes="90vw"
               className="gallery-lightbox__image"
             />
+            <ImageCredit photo={current} />
+            </div>
             <figcaption>
               <span>{current.alt}</span>
               <span className="gallery-lightbox__count">

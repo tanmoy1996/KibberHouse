@@ -3,6 +3,7 @@ export type MediaAsset = {
   src: ImageProps["src"];
   alt: string;
   objectPosition?: string;
+  credit?: string;
 };
 export const photos = {
   bedroom: { src: "/media/bedroom.webp", alt: "Warm wood-lined bedroom with a stove and mountain views through two windows", width: 1678, height: 937 },
@@ -57,7 +58,7 @@ export const pageHeroes = {
 } satisfies Record<string, MediaAsset>;
 
 // Our own wildlife photographs from the high slopes of Spiti, resized to WebP.
-const w = (name: string, alt: string, height = 1350) => ({ src: `/media/wildlife/${name}.webp`, alt, width: 1800, height });
+const w = (name: string, alt: string, height = 1350) => ({ src: `/media/wildlife/${name}.webp`, alt, width: 1800, height, credit: "Tanzin Tsewang" });
 export const wildlife = {
   leopardCub: w("leopard-cub", "A snow leopard cub watches from a snowy ridge while its mother rests in the foreground"),
   leopardRockWall: w("leopard-rock-wall", "A snow leopard picking its way down a sandstone rock face", 1200),

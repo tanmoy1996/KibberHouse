@@ -5,6 +5,7 @@ export const contact: {
   bookingUrl: string;
   instagram: string | null;
   facebook: string | null;
+  youtube: string | null;
   whatsapp: string | null;
   whatsappNumber: string;
   googleMaps: string | null;
@@ -17,8 +18,8 @@ export const contact: {
   bookingUrl:
     "https://wa.me/918334935131?text=Hi%2C+I%27d+like+to+book+a+stay+at+Kibber+House.+Please+share+availability+and+rates.",
   instagram: "https://www.instagram.com/kibberhouse/",
-  // Add the Facebook page URL here; the footer icon appears once it is set.
-  facebook: null,
+  facebook: "https://www.facebook.com/p/Kibber-House-61593626888214/",
+  youtube: "https://www.youtube.com/@KibberHouse",
   whatsapp: "https://wa.me/918334935131?text=Hi%2C+I%27d+like+to+book+a+stay+at+Kibber+House.+Please+share+availability+and+rates.",
   // International format without "+", as wa.me expects.
   whatsappNumber: "918334935131",

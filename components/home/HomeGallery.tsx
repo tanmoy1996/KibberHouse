@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
 import type { MediaAsset } from "@/content/media";
+import { ImageCredit } from "@/components/ui/ImageCredit";
 
 type Photo = MediaAsset & { width: number; height: number };
 
@@ -46,6 +47,7 @@ export function HomeGallery({
         {photos.map((photo) => (
           <li key={String(photo.src)} style={{ aspectRatio: `${photo.width} / ${photo.height}` }}>
             <Image src={photo.src} alt={photo.alt} fill sizes="(min-width: 800px) 40vw, 80vw" />
+            <ImageCredit photo={photo} />
           </li>
         ))}
       </ul>

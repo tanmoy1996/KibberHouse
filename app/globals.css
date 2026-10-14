@@ -2304,6 +2304,45 @@
 body:has(.mobile-menu[data-open="true"]) .whatsapp-fab { visibility: hidden; }
 .site-footer { padding-bottom: 6rem; }
 
+.home-split__media,
+.experiences-chapter__media,
+.gallery-lightbox__photo {
+  position: relative;
+}
+
+.image-credit {
+  position: absolute;
+  right: 0.65rem;
+  bottom: 0.65rem;
+  z-index: 1;
+  max-width: calc(100% - 1.3rem);
+  padding: 0.3rem 0.5rem;
+  border-radius: 0.2rem;
+  background: rgb(9 14 19 / 78%);
+  color: #fff;
+  font: 400 0.75rem/1.4 var(--font-karla), sans-serif;
+  text-align: right;
+  pointer-events: none;
+}
+
+.gallery-masonry button:has(.image-credit) .gallery-masonry__caption {
+  padding-bottom: 3rem;
+}
+
+.gallery-lightbox__photo {
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+}
+
+.gallery-lightbox .gallery-lightbox__photo img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: calc(100dvh - 12rem);
+}
+
 .bed-story {
   background:
     radial-gradient(circle at 88% 8%, rgba(200, 127, 46, 0.22), transparent 28rem),

@@ -9,6 +9,7 @@ import { house } from "@/content/house";
 import { GalleryGrid } from "@/components/gallery/GalleryGrid";
 import { photos, wildlife, type MediaAsset } from "@/content/media";
 import { seasons } from "@/content/seasons";
+import { ImageCredit } from "@/components/ui/ImageCredit";
 
 export const metadata = pageMetadata({
   title: "Experiences in Spiti",
@@ -129,6 +130,7 @@ export default function Page() {
               height={wildlife.leopardCub.height}
               sizes="(min-width: 800px) 38vw, 88vw"
             />
+            <ImageCredit photo={wildlife.leopardCub} />
           </figure>
           <div className="home-split__content" data-reveal="fade">
             <p className="home-kicker">Featured · {"season" in leopard && leopard.season}</p>
@@ -161,6 +163,7 @@ export default function Page() {
                   sizes="(min-width: 800px) 40vw, 88vw"
                   style={{ objectPosition: chapter.photo.objectPosition }}
                 />
+                <ImageCredit photo={chapter.photo} />
               </figure>
               <div className="experiences-chapter__content" data-reveal="fade">
                 <p className="home-kicker">
