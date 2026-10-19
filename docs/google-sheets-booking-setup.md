@@ -60,3 +60,29 @@ out on the next guest's check-in date does not create a conflict.
 When Apps Script code changes, create a new deployment version (or edit the
 existing deployment) so the live `/exec` URL runs the latest code.
 
+
+## Visitor logging
+
+Update Apps Script with `google-apps-script/Code.gs`, run `setupBookingSheet()`
+again, and update the existing web-app deployment to a new version. Setup preserves
+existing bookings and inventory. The **Visitors** tab is also created automatically
+on the first logged visit. Deploy the updated website using the existing server
+variables; no new credentials are needed.
+
+Each initial page load and client-side page navigation records a row with server
+time, anonymous tab-session ID, page path, referring page URL (without query strings), utm_source,
+utm_medium, utm_campaign, device category, language, and timezone. URL query strings
+(other than those three campaign tags), IP addresses, and names are not collected.
+Names remain in booking enquiries only. Do Not Track is respected. Sessions are
+anonymous browsing groups, not verified people; browser blocking, bots and disabled
+JavaScript can affect counts. Failed writes are not retried. Manage retention by
+periodically removing old rows from Visitors.
+
+Verify after deployment: open a page with `?utm_source=test&utm_campaign=launch`,
+navigate to another page, and confirm two rows in Visitors with the same session ID.
+Confirm booking enquiries still land in Bookings.
+
+The referrer column captures the source page URL up to 300 characters, excluding
+query strings and fragments. Browsers often limit cross-site referrers to the
+origin, and apps or direct visits may supply none. UTM tags are captured separately
+from the destination URL, even when the referrer is unavailable.

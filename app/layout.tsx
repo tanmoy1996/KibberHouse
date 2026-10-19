@@ -1,3 +1,4 @@
+import { VisitorTracker } from "@/components/analytics/VisitorTracker";
 import type { Metadata } from "next";
 import { Fraunces, Karla, IBM_Plex_Mono, Qwitcher_Grypen, Parisienne } from "next/font/google";
 import { site } from "@/config/site";
@@ -113,6 +114,7 @@ export default function RootLayout({
         <a className="skip-link" href="#main">
           Skip to content
         </a>
+        <VisitorTracker />
         <HeaderAppearanceProvider>
           <SiteHeader />
           <main id="main" className="site-main" tabIndex={-1}>

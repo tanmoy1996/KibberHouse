@@ -73,3 +73,14 @@ export async function createEnquiry(payload: Record<string, string>) {
   }
   return { ok: true as const, bookingId: result.bookingId };
 }
+
+export async function logVisit(payload: Record<string, string>) {
+  const { endpoint, secret } = config();
+  const response = await sheetFetch(endpoint, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ ...payload, action: "logVisit", secret }),
+  });
+  const result = await response.json();
+  if (result.ok !== true) throw new BookingSheetError("Visit could not be saved.", 502);
+}

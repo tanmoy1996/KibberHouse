@@ -11,6 +11,31 @@
 
 const BOOKINGS_SHEET = "Bookings";
 const INVENTORY_SHEET = "Inventory";
+const VISITORS_SHEET = "Visitors";
+const VISITOR_FIELDS = ["sessionId", "path", "referrer", "utmSource", "utmMedium", "utmCampaign", "device", "language", "timezone"];
+const VISITOR_HEADERS = ["visited_at", "session_id", "page", "referrer", "utm_source", "utm_medium", "utm_campaign", "device", "language", "timezone"];
+
+function visitorSheet_() {
+  const sheet = getOrCreateSheet_(getSpreadsheet_(), VISITORS_SHEET);
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(VISITOR_HEADERS);
+    sheet.setFrozenRows(1);
+  }
+  return sheet;
+}
+
+function logVisit_(payload) {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    visitorSheet_().appendRow([new Date()].concat(VISITOR_FIELDS.map(function (key) {
+      return clean_(String(payload[key] || "").slice(0, 300));
+    })));
+    return json_({ ok: true });
+  } finally {
+    lock.releaseLock();
+  }
+}
 
 const BOOKING_HEADERS = [
   "booking_id",
@@ -34,6 +59,7 @@ const BOOKING_HEADERS = [
 const INVENTORY_HEADERS = ["room_type", "total_rooms"];
 
 function setupBookingSheet() {
+  visitorSheet_();
   const spreadsheet = getSpreadsheet_();
   const bookings = getOrCreateSheet_(spreadsheet, BOOKINGS_SHEET);
   const inventory = getOrCreateSheet_(spreadsheet, INVENTORY_SHEET);
@@ -88,6 +114,7 @@ function doPost(event) {
   try {
     const payload = JSON.parse(event.postData.contents || "{}");
     authorize_(payload.secret);
+    if (payload.action === "logVisit") return logVisit_(payload);
     if (payload.action !== "createEnquiry") {
       return json_({ ok: false, message: "Unknown action." });
     }

@@ -34,6 +34,15 @@ export default function Page() {
         WhatsApp with your message ready to send, and anything you send there is handled
         by WhatsApp under its own privacy policy.
       </p>
+      <h2>Website visits</h2>
+      <p>
+        We record page visits in a private Google Sheet to understand how people find
+        and use this website. This includes the visit time, an anonymous session ID,
+        page path, referring page URL (without query strings), campaign tags, device category, browser language
+        and timezone. The session ID is stored in your browser for the tab session.
+        We do not record your IP address or identify you by name from a visit.
+        Browsers with Do Not Track enabled are excluded.
+      </p>
       <h2>Maps</h2>
       <p>
         The Contact page shows an embedded Google Map, which is loaded from Google and
