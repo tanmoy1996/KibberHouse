@@ -1,13 +1,14 @@
 "use client";
 
-import Link from "next/link";
+import { enquiryWhatsAppUrl } from "@/lib/booking/whatsapp";
+import { StayDatePicker } from "@/components/booking/StayDatePicker";
 import { useState, type FormEvent } from "react";
-import type { AvailabilityResponse } from "@/lib/booking/types";
 
-type AvailabilityState =
-  | { kind: "idle" | "loading" }
-  | { kind: "ready"; data: AvailabilityResponse }
-  | { kind: "error"; message: string };
+type AvailabilityState = {
+  kind: "idle" | "loading" | "saved" | "error";
+  message?: string;
+  whatsappUrl?: string;
+};
 
 function Counter({
   label,
@@ -32,7 +33,10 @@ function Counter({
           disabled={value <= min}
           onClick={() => onChange(value - 1)}
         >
-          −
+          <svg width="14" height="14" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
+            {/* <circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4" /> */}
+            <path d="M6.5 10h7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+          </svg>
         </button>
         <output aria-live="polite">{value}</output>
         <button
@@ -41,7 +45,10 @@ function Counter({
           disabled={value >= max}
           onClick={() => onChange(value + 1)}
         >
-          +
+          <svg width="14" height="14" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
+            {/* <circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4" /> */}
+            <path d="M6.5 10h7M10 6.5v7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+          </svg>
         </button>
       </div>
     </div>
@@ -55,96 +62,63 @@ export function HomeAvailability() {
   const [children, setChildren] = useState(0);
   const [state, setState] = useState<AvailabilityState>({ kind: "idle" });
 
-  async function checkAvailability(event: FormEvent<HTMLFormElement>) {
+  async function sendEnquiry(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (state.kind === "loading" || state.kind === "saved") return;
     if (!checkIn || !checkOut || checkOut <= checkIn) {
       setState({ kind: "error", message: "Choose a valid stay." });
       return;
     }
 
+    // Reserve the tab during the click so browsers do not block it after saving.
+    const whatsappTab = window.open("about:blank", "_blank");
+    if (whatsappTab) whatsappTab.opener = null;
     setState({ kind: "loading" });
     try {
-      const response = await fetch(
-        `/api/availability?checkIn=${encodeURIComponent(checkIn)}&checkOut=${encodeURIComponent(checkOut)}`,
-        { cache: "no-store" },
-      );
-      const data = (await response.json()) as AvailabilityResponse & {
-        message?: string;
-      };
-      if (!response.ok) throw new Error(data.message || "Availability unavailable.");
-      setState({ kind: "ready", data });
+      const details = { checkIn, checkOut, adults: String(adults), children: String(children) };
+      const response = await fetch("/api/stay-enquiry", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(details),
+      });
+      const data = await response.json();
+      if (!response.ok || !data.bookingId) throw new Error(data.message || "Your enquiry could not be saved.");
+      const whatsappUrl = enquiryWhatsAppUrl(details, data.bookingId);
+      setState({ kind: "saved", message: "Enquiry saved. Continue on WhatsApp to send your message.", whatsappUrl });
+      if (whatsappTab) whatsappTab.location.replace(whatsappUrl);
     } catch (error) {
+      whatsappTab?.close();
       setState({
         kind: "error",
         message:
           error instanceof Error
             ? error.message
-            : "Live availability is temporarily unavailable.",
+            : "Your enquiry could not be saved. Please try again.",
       });
     }
   }
 
-  const bookingHref = `/book?checkIn=${encodeURIComponent(checkIn)}&checkOut=${encodeURIComponent(checkOut)}&adults=${adults}&children=${children}`;
 
   return (
     <div className="home-availability">
-      <form onSubmit={checkAvailability} className="home-availability__form">
+      <form onSubmit={sendEnquiry} className="home-availability__form">
         <div className="home-availability__item home-availability__item--dates">
-          <label>
-            <span className="home-availability__label">Check in</span>
-            <input
-              type="date"
-              value={checkIn}
-              onChange={(event) => {
-                setCheckIn(event.target.value);
-                setState({ kind: "idle" });
-              }}
-              required
-            />
-          </label>
-          <label>
-            <span className="home-availability__label">Check out</span>
-            <input
-              type="date"
-              min={checkIn || undefined}
-              value={checkOut}
-              onChange={(event) => {
-                setCheckOut(event.target.value);
-                setState({ kind: "idle" });
-              }}
-              required
-            />
-          </label>
+          <StayDatePicker checkIn={checkIn} checkOut={checkOut} onChange={(start, end) => {
+            setCheckIn(start);
+            setCheckOut(end);
+            setState({ kind: "idle" });
+          }} />
         </div>
-        <Counter label="Adults" value={adults} min={1} max={8} onChange={setAdults} />
-        <Counter label="Children" value={children} min={0} max={6} onChange={setChildren} />
+        <Counter label="Adults" value={adults} min={1} max={8} onChange={value => { setAdults(value); setState({ kind: "idle" }); }} />
+        <Counter label="Children" value={children} min={0} max={6} onChange={value => { setChildren(value); setState({ kind: "idle" }); }} />
         <button
           type="submit"
           className="home-availability__submit"
-          disabled={state.kind === "loading"}
+          disabled={state.kind === "loading" || state.kind === "saved"}
         >
-          {state.kind === "loading" ? "Checking…" : "Check availability"}
+          {state.kind === "loading" ? "Saving…" : state.kind === "saved" ? "Enquiry saved" : "Enquire on WhatsApp"}
         </button>
         <div className="home-availability__result" aria-live="polite">
-          {state.kind === "ready" && (
-            <>
-              <span>
-                {state.data.available
-                  ? state.data.rooms
-                      .filter((room) => room.available > 0)
-                      .map((room) => `${room.available} ${room.roomType}`)
-                      .join(" · ")
-                  : "No rooms showing for these dates"}
-              </span>
-              {state.data.available && <Link href={bookingHref}>Continue enquiry →</Link>}
-            </>
-          )}
-          {state.kind === "error" && (
-            <>
-              <span>{state.message}</span>
-              <Link href={bookingHref}>Send an enquiry →</Link>
-            </>
-          )}
         </div>
       </form>
     </div>

@@ -7,7 +7,7 @@ import { house } from "@/content/house";
 export const metadata = pageMetadata({
   title: "Book your stay",
   description:
-    "Check live room availability at Kibber House in Spiti Valley and send a booking enquiry. We confirm every stay personally.",
+    "Save your stay details and enquire on WhatsApp at Kibber House in Spiti Valley. We confirm every stay personally.",
   path: "/book",
 });
 
@@ -22,8 +22,8 @@ export default function Page() {
           <p className="home-kicker">Book your stay</p>
           <h1 id="book-title">Plan your stay</h1>
           <p>
-            Check live room availability, then send us your details. We will confirm
-            your stay personally.
+            Share your stay details, then continue on WhatsApp. We will confirm
+            availability and your stay personally.
           </p>
         </div>
       </section>

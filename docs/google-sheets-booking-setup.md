@@ -86,3 +86,15 @@ The referrer column captures the source page URL up to 300 characters, excluding
 query strings and fragments. Browsers often limit cross-site referrers to the
 origin, and apps or direct visits may supply none. UTM tags are captured separately
 from the destination URL, even when the referrer is unavailable.
+
+## Save, then continue on WhatsApp
+
+The homepage saves dates and guest counts as an Enquiry in Bookings, then opens
+WhatsApp with these details and the returned enquiry reference. Name, phone and
+email are blank for homepage enquiries because those fields are not collected there.
+The full booking form saves all supplied fields and follows the same WhatsApp flow.
+Guests must press Send in WhatsApp; the site cannot verify that they do so. A saved
+Enquiry therefore does not mean a WhatsApp message was sent or a booking confirmed.
+If the sheet write fails, the website shows an error and does not redirect.
+The existing Apps Script createEnquiry action is reused; no script update is needed
+for this change. Deploy the updated website with the existing sheet credentials.

@@ -21,7 +21,7 @@ export default function Page() {
         When you send an enquiry from the Book page, the details you enter (your name,
         phone number, email, dates, guests, room and meal preferences, and any special
         requests) are saved to a private Google Sheet run by Kibber House. We use them
-        only to reply to you and to arrange your stay.
+        only to reply to you and to arrange your stay. Homepage enquiries save your selected dates and guest counts. After saving, WhatsApp opens with your enquiry details ready for you to send.
       </p>
       <h2>Availability checks</h2>
       <p>

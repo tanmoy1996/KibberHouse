@@ -4040,3 +4040,194 @@ body:has(.mobile-menu[data-open="true"]) .whatsapp-fab { visibility: hidden; }
     grid-template-columns: 1fr;
   }
 }
+
+/* Shared stay calendar: fluid controls and a stable six-week calendar. */
+.stay-dates { min-width: 0; width: 100%; }
+.book-grid > .stay-dates { grid-column: 1 / -1; }
+.home-availability__item--dates { min-width: 0; }
+.stay-dates__trigger {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  min-height: 4rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-rule-light);
+  border-radius: 6px;
+  background: var(--color-snow);
+  color: var(--color-yak);
+  text-align: left;
+  cursor: pointer;
+}
+.stay-dates__trigger span { display: grid; gap: 0.3rem; min-width: 0; }
+.stay-dates__trigger small { font: 400 0.625rem/1.3 var(--font-karla), sans-serif; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-scree-deep); }
+.stay-dates__trigger strong { font: 400 0.9375rem/1.4 var(--font-karla), sans-serif; white-space: nowrap; }
+.stay-dates__arrow { color: var(--color-scree); }
+.home-availability__item--dates .stay-dates__trigger { min-height: 3.5rem; padding: 0.4rem 0; border: 0; border-radius: 0; background: transparent; }
+.stay-dates__dialog {
+  box-sizing: border-box;
+  inset: 0;
+  margin: auto;
+  width: min(24rem, calc(100% - 2rem));
+  height: fit-content;
+  max-width: none;
+  max-height: calc(100dvh - 2rem);
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 1.25rem;
+  border: 1px solid var(--color-rule-light);
+  border-radius: 12px;
+  background: var(--color-snow);
+  color: var(--color-yak);
+  font: 400 0.9375rem/1.4 var(--font-karla), sans-serif;
+  box-shadow: 0 20px 80px #0004;
+}
+.stay-dates__dialog::backdrop { background: rgb(24 20 16 / 55%); }
+.stay-dates__heading { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+.stay-dates__heading h2 { margin: 0; font: 400 1.5rem/1.2 var(--font-fraunces), serif; }
+.stay-dates__heading button { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--color-scree-deep); font: 400 1.75rem/1 sans-serif; }
+.stay-dates__dialog button { cursor: pointer; }
+.stay-dates__hint { display: flex; align-items: center; min-height: 2.5rem; margin: 0.25rem 0 0.75rem; color: var(--color-scree-deep); font-size: 0.8125rem; line-height: 1.4; }
+.stay-dates__dialog .rdp-root {
+  --rdp-accent-color: var(--color-chorten);
+  --rdp-accent-background-color: #e4eeeb;
+  --rdp-range_middle-background-color: #e4eeeb;
+  --rdp-day-height: 44px;
+  --rdp-day-width: 100%;
+  --rdp-day_button-height: 40px;
+  --rdp-day_button-width: 40px;
+  --rdp-nav-height: 44px;
+  --rdp-nav_button-height: 44px;
+  --rdp-nav_button-width: 44px;
+  --rdp-disabled-opacity: 0.3;
+  --rdp-outside-opacity: 0.4;
+  margin: 0;
+  width: 100%;
+}
+.stay-dates__dialog .rdp-months { display: block; width: 100%; max-width: none; }
+.stay-dates__dialog .rdp-month { width: 100%; }
+.stay-dates__dialog .rdp-month_grid { width: 100%; table-layout: fixed; }
+.stay-dates__dialog .rdp-day { width: auto; padding: 0; }
+.stay-dates__dialog .rdp-day_button { margin-inline: auto; max-width: 100%; font-size: 0.875rem; }
+.stay-dates__dialog .rdp-month_caption { margin-bottom: 0.5rem; font-size: 0.9375rem; font-weight: 500; }
+.stay-dates__dialog .rdp-weekday { font-size: 0.6875rem; font-weight: 400; }
+.stay-dates__actions { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--color-rule-light); }
+.stay-dates__actions button { min-height: 44px; padding: 0.625rem 0.875rem; border: 0; border-radius: 6px; background: transparent; font: inherit; font-size: 0.8125rem; }
+.stay-dates__actions button:last-child { color: white; background: var(--color-chorten); }
+.stay-dates__actions button:disabled { opacity: 0.4; cursor: default; }
+.stay-dates button:focus-visible, .stay-dates__dialog button:focus-visible, .stay-dates__dialog select:focus-visible { outline: 2px solid var(--color-chorten); outline-offset: 3px; }
+@media (max-width: 480px) {
+  .stay-dates__trigger { gap: 0.75rem; padding-inline: 0.75rem; }
+  .stay-dates__dialog { padding: 1rem; }
+}
+@media (max-width: 359px) {
+  .stay-dates__dialog { width: calc(100% - 1rem); padding: 0.75rem; }
+  .stay-dates__dialog .rdp-root { --rdp-day_button-width: 36px; --rdp-day_button-height: 36px; }
+  .stay-dates__trigger strong { font-size: 0.8125rem; }
+}
+
+/* One control treatment across the homepage availability bar. */
+.home-availability {
+  width: min(64rem, calc(100% - 3rem));
+}
+.home-availability__form {
+  display: grid;
+  grid-template-columns: minmax(17rem, 2.2fr) repeat(2, minmax(8rem, 1fr)) minmax(10rem, 1.35fr);
+  align-items: stretch;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1px solid rgb(36 30 25 / 10%);
+  border-radius: 10px;
+}
+.home-availability__item--count,
+.home-availability__item--dates .stay-dates__trigger,
+.home-availability__submit {
+  box-sizing: border-box;
+  height: 40px;
+  min-height: 40px;
+  margin: 0;
+  padding: 0 0.625rem;
+  border: 1px solid var(--color-rule-light);
+  border-radius: 6px;
+  background: var(--color-snow);
+  color: var(--color-yak);
+}
+.home-availability__item--count {
+  display: grid;
+  align-content: center;
+  gap: 0;
+  min-width: 0;
+}
+.home-availability__label,
+.home-availability__item--count .home-availability__label,
+.home-availability__item--dates .stay-dates__trigger small {
+  color: var(--color-scree-deep);
+  font: 400 0.5625rem/1 var(--font-karla), sans-serif;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.home-availability__count {
+  display: grid;
+  grid-template-columns: 1.5rem minmax(1ch, 1fr) 1.5rem;
+  gap: 0;
+  height: 18px;
+  margin-inline: -0.5rem;
+  width: calc(100% + 1rem);
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
+.home-availability__count button {
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 18px;
+  padding: 0;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+.home-availability__count button:hover:not(:disabled) {
+  background: var(--color-limewash);
+}
+.home-availability__count output {
+  align-self: center;
+  font: 400 0.8125rem/1 var(--font-karla), sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+.home-availability__item--dates .stay-dates__trigger {
+  height: 30px;
+  gap: 0.75rem;
+}
+.home-availability__item--dates .stay-dates__trigger span { gap: 2px; }
+.home-availability__item--dates .stay-dates__trigger strong { font-size: 0.8125rem; line-height: 1; }
+.home-availability__submit {
+  align-self: stretch;
+  width: 100%;
+  background: var(--color-chorten);
+  border-color: var(--color-chorten);
+  color: var(--color-snow);
+  font: 400 0.6875rem/1.5 var(--font-karla), sans-serif;
+  letter-spacing: 0.08em;
+}
+.home-availability__submit:hover:not(:disabled) {
+  border-color: var(--color-yak);
+  background: var(--color-yak);
+}
+.home-availability__count button:focus-visible,
+.home-availability__submit:focus-visible {
+  outline: 2px solid var(--color-chorten);
+  outline-offset: 3px;
+}
+.home-availability__result { grid-column: 1 / -1; flex-wrap: wrap; }
+@media (min-width: 48rem) and (max-width: 63.99rem) {
+  .home-availability__form { grid-template-columns: minmax(15rem, 2fr) repeat(2, minmax(7rem, 1fr)); }
+  .home-availability__submit { grid-column: 1 / -1; min-height: 30px; }
+}
+@media (max-width: 47.99rem) {
+  .home-availability { width: 100%; }
+  .home-availability__form { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; padding: 1rem; border-radius: 0; }
+  .home-availability__item--dates,
+  .home-availability__submit { grid-column: 1 / -1; }
+  .home-availability__submit { min-height: 30px; }
+}

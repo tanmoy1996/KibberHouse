@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { StayDatePicker } from "@/components/booking/StayDatePicker";
 import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { contact, contactPeople } from "@/content/contact";
@@ -8,12 +9,13 @@ import { house } from "@/content/house";
 import { photos, type MediaAsset } from "@/content/media";
 import { tariff, type MealCode } from "@/content/tariff";
 import { estimateStay, formatInr, formatUsd } from "@/lib/booking/estimate";
-import type { AvailabilityResponse } from "@/lib/booking/types";
+import { enquiryWhatsAppUrl } from "@/lib/booking/whatsapp";
 import { isIsoDate, isValidStay, phoneError } from "@/lib/booking/validation";
 
 type Status = {
   kind: "idle" | "submitting" | "success" | "error";
   message?: string;
+  whatsappUrl?: string;
 };
 
 // `value` is what the enquiry sheet records; keep it stable.
@@ -79,12 +81,6 @@ export function BookingEnquiryForm() {
   const [children, setChildren] = useState(0);
   const [room, setRoom] = useState("Any");
   const [meal, setMeal] = useState("Breakfast");
-  const [availability, setAvailability] = useState<
-    | { kind: "idle" }
-    | { kind: "ready"; data: AvailabilityResponse }
-    | { kind: "error"; message: string }
-  >({ kind: "idle" });
-
   // Carry over a stay started in the home page availability bar (/book?checkIn=…).
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -113,67 +109,38 @@ export function BookingEnquiryForm() {
     statusRef.current?.focus({ preventScroll: true });
   }, [status.kind]);
 
-  useEffect(() => {
-    if (!isValidStay(checkIn, checkOut)) return;
-
-    const controller = new AbortController();
-
-    fetch(
-      `/api/availability?checkIn=${encodeURIComponent(checkIn)}&checkOut=${encodeURIComponent(checkOut)}`,
-      { signal: controller.signal, cache: "no-store" },
-    )
-      .then(async (response) => {
-        const result = (await response.json()) as AvailabilityResponse & {
-          message?: string;
-        };
-        if (!response.ok) throw new Error(result.message || "Availability unavailable.");
-        setAvailability({ kind: "ready", data: result });
-      })
-      .catch((error: unknown) => {
-        if (error instanceof DOMException && error.name === "AbortError") return;
-        setAvailability({
-          kind: "error",
-          message: error instanceof Error ? error.message : "Availability unavailable.",
-        });
-      });
-
-    return () => controller.abort();
-  }, [checkIn, checkOut]);
-
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (status.kind === "submitting" || status.kind === "success") return;
+    if (!isValidStay(checkIn, checkOut)) {
+      setStatus({ kind: "error", message: "Please choose your check-in and check-out dates." });
+      return;
+    }
     const form = event.currentTarget;
     const phone = form.elements.namedItem("phone") as HTMLInputElement;
     const invalidPhone = phoneError(phone.value);
     phone.setCustomValidity(invalidPhone ?? "");
     setPhoneMessage(invalidPhone);
     if (!form.reportValidity()) return;
+    // Reserve the tab during the click so browsers do not block it after saving.
+    const whatsappTab = window.open("about:blank", "_blank");
+    if (whatsappTab) whatsappTab.opener = null;
     setStatus({ kind: "submitting" });
-    const payload = Object.fromEntries(new FormData(form).entries());
+    const payload = Object.fromEntries(Array.from(new FormData(form).entries(), ([key, value]) => [key, String(value).trim()]));
     try {
       const response = await fetch("/api/enquiry", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(payload),
       });
-      const result = (await response.json()) as { message?: string };
-      if (!response.ok)
-        throw new Error(result.message || "Online sending is unavailable.");
-      form.reset();
-      setPhoneMessage(null);
-      setCheckIn("");
-      setCheckOut("");
-      setAdults(2);
-      setChildren(0);
-      setRoom("Any");
-      setMeal("Breakfast");
-      setAvailability({ kind: "idle" });
-      setStatus({
-        kind: "success",
-        message:
-          "Thank you. We will be in touch personally; your stay is confirmed only once Kibber House confirms availability.",
-      });
+      const result = (await response.json()) as { message?: string; bookingId?: string };
+      if (!response.ok || !result.bookingId)
+        throw new Error(result.message || "Your enquiry could not be saved.");
+      const whatsappUrl = enquiryWhatsAppUrl(payload, result.bookingId);
+      setStatus({ kind: "success", message: "Your enquiry has been saved. Continue on WhatsApp and press Send to share it with us.", whatsappUrl });
+      if (whatsappTab) whatsappTab.location.replace(whatsappUrl);
     } catch (error) {
+      whatsappTab?.close();
       setStatus({
         kind: "error",
         message:
@@ -202,33 +169,10 @@ export function BookingEnquiryForm() {
             <span className="book-step__title">When would you like to come?</span>
           </legend>
           <div className="book-grid">
-            <label className="book-field">
-              <span className="book-field__label">Check-in</span>
-              <input
-                name="checkIn"
-                type="date"
-                value={checkIn}
-                onChange={(event) => {
-                  setCheckIn(event.target.value);
-                  setAvailability({ kind: "idle" });
-                }}
-                required
-              />
-            </label>
-            <label className="book-field">
-              <span className="book-field__label">Check-out</span>
-              <input
-                name="checkOut"
-                type="date"
-                min={checkIn || undefined}
-                value={checkOut}
-                onChange={(event) => {
-                  setCheckOut(event.target.value);
-                  setAvailability({ kind: "idle" });
-                }}
-                required
-              />
-            </label>
+            <StayDatePicker checkIn={checkIn} checkOut={checkOut} onChange={(start, end) => {
+              setCheckIn(start);
+              setCheckOut(end);
+            }} />
             <Counter label="Adults" name="adults" value={adults} min={1} max={12} onChange={setAdults} />
             <Counter label="Children" name="children" value={children} min={0} max={12} onChange={setChildren} />
           </div>
@@ -412,32 +356,11 @@ export function BookingEnquiryForm() {
           </p>
         </div>
 
-        <div className="book-summary__availability" aria-live="polite" data-state={availability.kind}>
-          {availability.kind === "idle" && validStay && "Checking live availability…"}
-          {availability.kind === "ready" && (
-            <>
-              <strong>
-                {availability.data.available
-                  ? "Rooms are showing as available."
-                  : "No rooms are currently showing as available."}
-              </strong>
-              <span>
-                {availability.data.rooms
-                  .map((r) => `${r.roomType}: ${r.available} available`)
-                  .join(" · ")}
-              </span>
-            </>
-          )}
-          {availability.kind === "error" && (
-            <span>Live availability could not be checked. You can still send an enquiry.</span>
-          )}
-        </div>
-
-        <button type="submit" className="book-summary__submit" disabled={status.kind === "submitting"}>
-          {status.kind === "submitting" ? "Sending…" : "Send enquiry"}
+        <button type="submit" className="book-summary__submit" disabled={status.kind === "submitting" || status.kind === "success"}>
+          {status.kind === "submitting" ? "Saving…" : status.kind === "success" ? "Enquiry saved" : "Save & continue on WhatsApp"}
         </button>
         <p id="booking-note" className="book-summary__note">
-          This is an enquiry. Availability is confirmed separately by Kibber House.
+          Your details are saved before WhatsApp opens with your message ready to send. Kibber House confirms availability personally.
         </p>
         <div
           ref={statusRef}
@@ -454,9 +377,10 @@ export function BookingEnquiryForm() {
                   {status.kind === "success" ? <path d="M5 12.5l4.5 4.5L19 7.5" /> : <path d="M12 7v6M12 16.5v.5" />}
                 </svg>
               </span>
-              <strong>{status.kind === "success" ? "Enquiry sent" : "Not sent"}</strong>
+              <strong>{status.kind === "success" ? "Enquiry saved" : "Not saved"}</strong>
               <p>
                 {status.message}
+                {status.whatsappUrl && <> <a href={status.whatsappUrl} target="_blank" rel="noopener noreferrer">Open WhatsApp</a>.</>}
                 {status.kind === "error" && contact.email && (
                   <>
                     {" "}
