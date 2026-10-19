@@ -84,8 +84,8 @@ export default function Page() {
 
       <section className="experiences-hero" data-tone="dark" aria-labelledby="experiences-title">
         <Image
-          src={photos.nightSkyWide.src}
-          alt={photos.nightSkyWide.alt}
+          src="/media/experiences-starry-night.webp"
+          alt="Stars and the Milky Way above snowy mountains and the warmly lit Kibber House"
           fill
           preload
           sizes="100vw"

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { EntryReady } from "@/components/loading/EntryExperience";
+import { HomeHeroVideo } from "./HomeHeroVideo";
 import { HomeAvailability } from "./HomeAvailability";
 import { HomeRoomsBanner } from "./HomeRoomsBanner";
 import { HomeGallery } from "./HomeGallery";
@@ -52,15 +53,7 @@ export function HomePage() {
 
       <section className="home-hero" data-tone="dark" aria-label="Kibber House">
         <div className="home-hero__media">
-          <Image
-            src={photos.exteriorSnow.src}
-            alt={photos.exteriorSnow.alt}
-            fill
-            preload
-            sizes="100vw"
-            className="home-hero__image"
-            style={{ objectPosition: photos.exteriorSnow.objectPosition }}
-          />
+          <HomeHeroVideo />
           <div className="home-hero__veil" aria-hidden="true" />
           <p className="home-hero__tagline">
             <span>Arrive as a guest.</span> <span>Leave as family!</span>
