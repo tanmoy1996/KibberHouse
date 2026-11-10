@@ -2,7 +2,7 @@ import Link from "next/link";
 import { BrandMark } from "@/components/ui/BrandMark";
 import { SocialIcon, type SocialIconName } from "@/components/ui/SocialIcon";
 import {
-  navigation,
+  footerNavigation,
   legalNavigation,
 } from "@/content/navigation";
 import { contact, contactPeople } from "@/content/contact";
@@ -52,7 +52,7 @@ export function SiteFooter() {
             )}
           </dl>
           <nav aria-label="Footer navigation">
-            {navigation.map((item) => (
+            {footerNavigation.map((item) => (
               <Link key={item.href} href={item.href}>
                 {item.label}
               </Link>

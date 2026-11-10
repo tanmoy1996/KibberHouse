@@ -15,12 +15,14 @@ function Counter({
   value,
   min,
   max,
+  disabled = false,
   onChange,
 }: {
   label: string;
   value: number;
   min: number;
   max: number;
+  disabled?: boolean;
   onChange: (value: number) => void;
 }) {
   return (
@@ -30,7 +32,7 @@ function Counter({
         <button
           type="button"
           aria-label={`Fewer ${label.toLowerCase()}`}
-          disabled={value <= min}
+          disabled={disabled || value <= min}
           onClick={() => onChange(value - 1)}
         >
           <svg width="14" height="14" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
@@ -42,7 +44,7 @@ function Counter({
         <button
           type="button"
           aria-label={`More ${label.toLowerCase()}`}
-          disabled={value >= max}
+          disabled={disabled || value >= max}
           onClick={() => onChange(value + 1)}
         >
           <svg width="14" height="14" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
@@ -70,9 +72,6 @@ export function HomeAvailability() {
       return;
     }
 
-    // Reserve the tab during the click so browsers do not block it after saving.
-    const whatsappTab = window.open("about:blank", "_blank");
-    if (whatsappTab) whatsappTab.opener = null;
     setState({ kind: "loading" });
     try {
       const details = { checkIn, checkOut, adults: String(adults), children: String(children) };
@@ -85,9 +84,8 @@ export function HomeAvailability() {
       if (!response.ok || !data.bookingId) throw new Error(data.message || "Your enquiry could not be saved.");
       const whatsappUrl = enquiryWhatsAppUrl(details, data.bookingId);
       setState({ kind: "saved", message: "Enquiry saved. Continue on WhatsApp to send your message.", whatsappUrl });
-      if (whatsappTab) whatsappTab.location.replace(whatsappUrl);
+      window.location.assign(whatsappUrl);
     } catch (error) {
-      whatsappTab?.close();
       setState({
         kind: "error",
         message:
@@ -102,15 +100,15 @@ export function HomeAvailability() {
   return (
     <div className="home-availability">
       <form onSubmit={sendEnquiry} className="home-availability__form">
-        <div className="home-availability__item home-availability__item--dates">
+        <div className="home-availability__item home-availability__item--dates" inert={state.kind === "loading"}>
           <StayDatePicker checkIn={checkIn} checkOut={checkOut} onChange={(start, end) => {
             setCheckIn(start);
             setCheckOut(end);
             setState({ kind: "idle" });
           }} />
         </div>
-        <Counter label="Adults" value={adults} min={1} max={8} onChange={value => { setAdults(value); setState({ kind: "idle" }); }} />
-        <Counter label="Children" value={children} min={0} max={6} onChange={value => { setChildren(value); setState({ kind: "idle" }); }} />
+        <Counter label="Adults" value={adults} min={1} max={8} disabled={state.kind === "loading"} onChange={value => { setAdults(value); setState({ kind: "idle" }); }} />
+        <Counter label="Children" value={children} min={0} max={6} disabled={state.kind === "loading"} onChange={value => { setChildren(value); setState({ kind: "idle" }); }} />
         <button
           type="submit"
           className="home-availability__submit"
@@ -119,6 +117,8 @@ export function HomeAvailability() {
           {state.kind === "loading" ? "Saving…" : state.kind === "saved" ? "Enquiry saved" : "Enquire on WhatsApp"}
         </button>
         <div className="home-availability__result" aria-live="polite">
+          {state.message && <span role={state.kind === "error" ? "alert" : undefined}>{state.message}</span>}
+          {state.whatsappUrl && <a href={state.whatsappUrl}>Continue on WhatsApp →</a>}
         </div>
       </form>
     </div>

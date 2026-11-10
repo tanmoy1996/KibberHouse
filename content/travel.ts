@@ -9,23 +9,27 @@ export const nearest = {
 
 export const routes = [
   {
-    from: "Delhi",
-    title: "Overnight to the mountains",
-    text: "Overnight Volvo buses run from Delhi to Manali (about 12–14 hrs), and to Shimla for the Kinnaur route. Continue to Kaza by local HRTC bus or shared taxi.",
+    from: "Kullu–Manali airport",
+    title: "By air to Bhuntar",
+    season: "Flights all year, weather permitting",
+    text: "Fly into Kullu–Manali airport (KUU) at Bhuntar, about 50 km south of Manali. From June to October continue over Kunzum Pass; in winter, drive round through Shimla and Kinnaur instead.",
   },
   {
-    from: "Bhuntar airport",
-    title: "Via Manali and Kunzum Pass",
-    text: "Fly into Bhuntar, 50 km from Manali, then drive about 200 km to Kaza through the Atal Tunnel and over Kunzum Pass (7–9 hrs). Usually open June to October.",
+    from: "Shimla",
+    title: "By road through Kinnaur",
+    season: "Open all year",
+    text: "The lower road follows the Sutlej through Reckong Peo, Nako and Tabo, about 420 km to Kaza. It stays open through the year, though heavy snow can close it for a day or two; best split over two days.",
   },
   {
-    from: "Shimla & Chandigarh",
-    title: "Through Kinnaur",
-    text: "The longer, lower road follows the Sutlej through Reckong Peo, Nako and Tabo. Shimla to Kaza is about 420 km, best split over two days. Open most of the year.",
+    from: "Manali",
+    title: "By road over Kunzum Pass",
+    season: "June to October · closed in winter",
+    text: "Through the Atal Tunnel and over Kunzum Pass (4,551 m), about 200 km to Kaza in 7–9 hours. The pass is closed by snow from about November to May.",
   },
   {
     from: "Kaza",
     title: "The last climb",
+    season: "All year",
     text: `Kibber is ${house.distanceFromKaza} above Kaza on a steep mountain road. Taxis run up from Kaza, and there is free parking at the house.`,
   },
 ] as const;

@@ -94,6 +94,7 @@ export default function Page() {
               <li key={route.from}>
                 <p className="home-kicker">From {route.from}</p>
                 <h3>{route.title}</h3>
+                <p className="contact-routes__season">{route.season}</p>
                 <p>{route.text}</p>
               </li>
             ))}
