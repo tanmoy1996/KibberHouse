@@ -50,7 +50,7 @@ export const placePhotos: Record<string, PlacePhoto> = {
   Kalpa: commons("kalpa", "Kalpa village with the Kinner Kailash range behind", "Gerd Eichmann", "CC BY-SA 4.0", "Kalpa-14-Kinnaur_Kailash-gje.jpg"),
   Gue: commons("gue", "The painted monastery at Gue", "Rodmantyler", "CC BY-SA 4.0", "Gue_Village_Monastery.jpg"),
   "Dhankar Monastery": commons("dhankar-monastery", "Dhankar village and monastery on their ridge", "John Hill", "CC BY-SA 4.0", "Dhankar_Gompa_and_village.jpg"),
-  "Pin Valley": commons("pin-valley", "Green slopes of the Pin valley under a deep blue sky", "Ra.manimtech", "CC BY-SA 4.0", "Morning_scene_in_Thuskeo_Dhar.jpg"),
+  Mudh: commons("pin-valley", "Green slopes of the Pin valley under a deep blue sky", "Ra.manimtech", "CC BY-SA 4.0", "Morning_scene_in_Thuskeo_Dhar.jpg"),
   Komic: commons("komic", "Ochre hills and snow peaks around Komic", "Sumita Roy Dutta", "CC BY-SA 4.0", "Komic_village.jpg"),
   Hikkim: commons("hikkim", "Hikkim village and its fields on the mountainside", "Sumita Roy Dutta", "CC BY-SA 4.0", "Hikkim_Village_and_water_reservoir_used_for_irrigation_spiti_India.jpg"),
   Langza: commons("langza", "Langza village beneath a snow-capped peak", "Madhumita Das", "CC BY-SA 4.0", "Langza_Village,_Himachal_Pradesh.jpg"),

@@ -4,15 +4,15 @@ import { house } from "./house";
 // conditions only; confirm them against current local information each season.
 export const nearest = {
   town: { name: "Kaza", detail: `${house.distanceFromKaza} · about 40 min by taxi` },
-  airport: { name: "Bhuntar (Kullu–Manali), KUU", detail: "via Manali · about 9–10 hrs by road" },
+  airport: { name: "Bhuntar (Kullu–Manali), KUU", detail: "via Manali · about 9–10 hrs by road · flights often cancelled" },
 } as const;
 
 export const routes = [
   {
     from: "Kullu–Manali airport",
     title: "By air to Bhuntar",
-    season: "Flights all year, weather permitting",
-    text: "Fly into Kullu–Manali airport (KUU) at Bhuntar, about 50 km south of Manali. From June to October continue over Kunzum Pass; in winter, drive round through Shimla and Kinnaur instead.",
+    season: "Flights all year, but often cancelled",
+    text: "Fly into Kullu–Manali airport (KUU) at Bhuntar, about 50 km south of Manali. Flights are often cancelled by weather, so keep a spare day or fly into Chandigarh instead. From June to October continue over Kunzum Pass; in winter, drive round through Shimla and Kinnaur instead.",
   },
   {
     from: "Shimla",

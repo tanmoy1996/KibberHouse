@@ -2,7 +2,7 @@ import { wildlife } from "./media";
 
 // The field guide: what lives, grows and lies around Kibber, and when to see it.
 // Months are 1–12. `months` is when it can be seen at all; `best` is when it is
-// easiest. Our own photographs carry Tanzin Tsewang's credit; the rest are from
+// easiest (for wild plants, when it flowers). Crops and rocks show no months. Our own photographs carry Tanzin Tsewang's credit; the rest are from
 // Wikimedia Commons under the licence shown (keep the credit with each photo).
 
 export const guideCategories = {
@@ -21,6 +21,13 @@ export const guideSectionTitles: Record<GuideCategory, string> = {
   plants: "What grows in the thin air",
   crops: "From the village terraces",
   rocks: "Written in the rock",
+};
+
+// Categories whose cards show the month strip, and what the highlighted months mean.
+export const guideMonthLabels: Partial<Record<GuideCategory, { seen: string; best: string }>> = {
+  wildlife: { seen: "Seen", best: "Best" },
+  birds: { seen: "Seen", best: "Best" },
+  plants: { seen: "Seen", best: "Flowering" },
 };
 
 export type GuidePhoto = {
@@ -105,10 +112,10 @@ const commonsPhotos = {
   horse: photo("horse", 800, 533, "Packhorses crossing the Lingti river suspension bridge in Spiti", "Mike Shaw", "CC BY-SA 4.0", "https://commons.wikimedia.org/wiki/File:Packhorses_crossing_Lingti_River_suspension_bridge,_near_Rama,_Spiti_Valley,_Himachal_Pradesh,_India_04.jpg"),
   caragana: photo("caragana", 800, 533, "Close-up of a spiny caragana shrub near Kibber", "Timothy A. Gonsalves", "CC BY-SA 4.0", "https://commons.wikimedia.org/wiki/File:Caragana_Versicolor_Shrubs_Closeup_Kibber_Spiti_Jun18_D72_7262.jpg"),
   seabuckthorn: photo("seabuckthorn", 679, 800, "Clusters of orange seabuckthorn berries", "Karunakar Rayker", "CC BY-SA 2.0", "https://commons.wikimedia.org/wiki/File:Seabuckthorn_berries,_Nubra_valley,_Ladakh.jpg"),
-  barley: photo("barley", 800, 533, "Women hoeing a barley field at Chicham, Spiti", "Timothy A. Gonsalves", "CC BY-SA 4.0", "https://commons.wikimedia.org/wiki/File:Women_Hoeing_Barley_Chicham_Spiti_Jun18_D72_7456.jpg"),
-  pea: photo("pea", 800, 533, "Green pea plants in a field at Mud, Pin Valley", "Timothy A. Gonsalves", "CC BY-SA 4.0", "https://commons.wikimedia.org/wiki/File:Pea_Plants_Mudh_Spiti_Himachal_Jun18_D72_7222.jpg"),
+  barley: photo("barley", 800, 600, "A ripe, golden ear of six-row barley with long bristles", "Alexander von Halem", "CC BY 2.0", "https://commons.wikimedia.org/wiki/File:Hordeum_vulgare_f._hexastichon,_ripe_ear.jpg"),
+  pea: photo("pea", 800, 661, "A basket heaped with freshly picked green pea pods among the pea plants", "George Chernilevsky", "Public domain", "https://commons.wikimedia.org/wiki/File:Peas_in_pods_2016_G1.jpg"),
   apple: photo("apple", 800, 538, "Terraced apple orchards in Kinnaur", "Sumita Roy Dutta", "CC BY-SA 4.0", "https://commons.wikimedia.org/wiki/File:Apple_orchard_at_Up_Mohal_Dubling.jpg"),
-  fossil: photo("fossil", 800, 531, "A fossil imprint in a rock at Komic, Spiti", "Sumita Roy Dutta", "CC BY-SA 4.0", "https://commons.wikimedia.org/wiki/File:Fossilised_object_at_Komic_village_,Spiti.jpg"),
+  fossil: photo("fossil", 800, 600, "Black stones with spiral ammonite fossils, the kind that weather out of Spiti's shale", "Govtul", "CC BY-SA 3.0", "https://commons.wikimedia.org/wiki/File:Rare_stones_called_saligram.JPG"),
   pillars: photo("pillars", 800, 471, "Dhankar village beneath eroded rock pillars", "Sumita Roy Dutta", "CC BY-SA 4.0", "https://commons.wikimedia.org/wiki/File:Dhankar_village.jpg"),
   rockart: photo("rockart", 800, 600, "Ancient carvings pecked into a boulder in Spiti", "Vikas banyal thakur", "CC BY-SA 4.0", "https://commons.wikimedia.org/wiki/File:Rock_art_of_spiti.jpg"),
 };
@@ -213,6 +220,18 @@ export const guideEntries: GuideEntry[] = [
     where: "Rocky slopes, field walls and the edges of villages",
     note: "A slim, night-time hunter with a white bib on its throat. Shy and rarely seen, though it often lives close to villages and their barns.",
     photo: commonsPhotos.marten,
+  },
+  {
+    id: "mountain-weasel",
+    name: "Mountain weasel",
+    otherNames: ["Pale weasel"],
+    latin: "Mustela altaica",
+    category: "wildlife",
+    months: allYear,
+    best: range(5, 10),
+    where: "Boulder fields, stone walls and pika burrows",
+    note: "A small, quick hunter with a golden-brown back and a creamy belly. It slips between the rocks after pikas and voles, and often stops to stand up and look around.",
+    photo: commonsPhotos.weasel,
   },
   {
     id: "woolly-hare",

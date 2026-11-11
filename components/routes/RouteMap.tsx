@@ -5,6 +5,7 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 import type { CircleMarker, LatLngBounds, Map as LeafletMap, Polyline } from "leaflet";
 import {
   circuitKm,
+  detourGroups,
   detours,
   placeTags,
   routeLegs,
@@ -333,6 +334,11 @@ export function RouteMap() {
   };
 
   const legs = view === "circuit" ? routeLegs : routeLegs.filter((leg) => leg.id === view);
+  // With one route chosen, show its side trips and the ones around Kaza and Kibber.
+  const groups = detourGroups
+    .filter((group) => view === "circuit" || group.route === view || group.route === "spiti")
+    .map((group) => ({ ...group, places: detours.filter((place) => place.route === group.route) }))
+    .filter((group) => group.places.length);
 
   return (
     <div className="route-map">
@@ -416,29 +422,44 @@ export function RouteMap() {
           <strong>Worth the detour</strong>
           <span>Side trips off the circuit, with the road distance from the turn-off town</span>
         </p>
-        <ul
-          className="route-map__stops route-map__stops--detours"
-          aria-label="Places worth a detour"
-          style={{ "--leg-colour": DETOUR_COLOUR } as CSSProperties}
-        >
-          {detours.map((place) => (
-            <li key={place.name}>
-              <button
-                type="button"
-                onClick={() => focusDetour(place)}
-                aria-pressed={active === place.name}
-                className={matches(place.name) ? "route-map__stop" : "route-map__stop is-filtered-out"}
-              >
-                <span className="route-map__km">
-                  {place.km} km from {place.from}
-                </span>
-                <span className="route-map__name">{place.name}</span>
-                <span className="route-map__alt">{place.altitude}</span>
-                <PlaceIcons tags={place.tags} />
-              </button>
-            </li>
-          ))}
-        </ul>
+        {groups.map((group) => (
+          <div key={group.route} className="route-map__detour-group">
+            <p className="route-map__detour-head">
+              {group.route !== "spiti" && (
+                <span
+                  className="route-map__swatch"
+                  style={{ background: LEG_COLOURS[group.route] }}
+                  aria-hidden="true"
+                />
+              )}
+              <strong>{group.title}</strong>
+              <span>{group.note}</span>
+            </p>
+            <ul
+              className="route-map__stops route-map__stops--detours"
+              aria-label={`Places worth a detour: ${group.title}`}
+              style={{ "--leg-colour": DETOUR_COLOUR } as CSSProperties}
+            >
+              {group.places.map((place) => (
+                <li key={place.name}>
+                  <button
+                    type="button"
+                    onClick={() => focusDetour(place)}
+                    aria-pressed={active === place.name}
+                    className={matches(place.name) ? "route-map__stop" : "route-map__stop is-filtered-out"}
+                  >
+                    <span className="route-map__km">
+                      {place.km} km from {place.from}
+                    </span>
+                    <span className="route-map__name">{place.name}</span>
+                    <span className="route-map__alt">{place.altitude}</span>
+                    <PlaceIcons tags={place.tags} />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </div>
     </div>
   );

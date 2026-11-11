@@ -273,14 +273,25 @@ export const circuitKm = routeLegs.reduce((total, leg) => total + leg.stops[leg.
 // `line` is only the side road, where it leaves the main route.
 export type Detour = Omit<RouteStop, "major"> & {
   from: string;
+  /** The route it's a side trip from; "spiti" is around Kaza and Kibber, reached on either. */
+  route: DetourRoute;
   line: [number, number][];
 };
+
+export type DetourRoute = RouteLeg["id"] | "spiti";
+
+export const detourGroups: { route: DetourRoute; title: string; note: string }[] = [
+  { route: "kinnaur", title: "Via Shimla", note: "Side trips off the Kinnaur road, before Kaza" },
+  { route: "manali", title: "Via Manali", note: "Side trips off the Kunzum road" },
+  { route: "spiti", title: "Around Kaza & Kibber", note: "Day trips from Kibber, whichever way you come" },
+];
 
 const side = (key: keyof typeof detourLines) => detourLines[key] as [number, number][];
 
 export const detours: Detour[] = [
   {
     name: "Chitkul",
+    route: "kinnaur",
     tags: ["stay", "hiking", "spiritual", "photogenic"],
     lat: 31.3518,
     lng: 78.4359,
@@ -292,7 +303,21 @@ export const detours: Detour[] = [
     line: side("Chitkul"),
   },
   {
+    name: "Sangla",
+    route: "kinnaur",
+    tags: ["stay", "spiritual", "photogenic"],
+    lat: 31.4259,
+    lng: 78.2637,
+    km: 17,
+    from: "Karcham",
+    altitude: "2,680 m",
+    note: "The main village of the Baspa valley, with the old Kamru fort above it. On the way up to Chitkul.",
+    label: "bottom",
+    line: side("Sangla"),
+  },
+  {
     name: "Kalpa",
+    route: "kinnaur",
     tags: ["stay", "spiritual", "photogenic"],
     lat: 31.5332,
     lng: 78.2498,
@@ -305,6 +330,7 @@ export const detours: Detour[] = [
   },
   {
     name: "Gue",
+    route: "kinnaur",
     tags: ["spiritual"],
     lat: 32.1311,
     lng: 78.5697,
@@ -317,6 +343,7 @@ export const detours: Detour[] = [
   },
   {
     name: "Dhankar Monastery",
+    route: "kinnaur",
     tags: ["stay", "hiking", "spiritual", "photogenic"],
     lat: 32.0895,
     lng: 78.2127,
@@ -328,19 +355,34 @@ export const detours: Detour[] = [
     line: side("Dhankar"),
   },
   {
-    name: "Pin Valley",
+    name: "Mudh",
+    route: "kinnaur",
     tags: ["stay", "hiking", "photogenic"],
     lat: 31.959,
     lng: 78.0324,
     km: 49,
     from: "Kaza",
     altitude: "3,770 m",
-    note: "A greener side valley and national park, ibex country, ending at Mud village.",
+    note: "The last village up the Pin valley, a greener side valley and national park in ibex country. Trails lead on from the road's end.",
     label: "left",
-    line: side("Pin Valley"),
+    line: side("Mudh"),
+  },
+  {
+    name: "Sagnam",
+    route: "kinnaur",
+    tags: ["stay", "spiritual", "photogenic"],
+    lat: 32.0331,
+    lng: 78.0567,
+    km: 36,
+    from: "Kaza",
+    altitude: "3,620 m",
+    note: "A farming village in the Pin valley, where the Parahio river joins the Pin. On the way up to Mudh.",
+    label: "right",
+    line: side("Sagnam"),
   },
   {
     name: "Komic",
+    route: "spiti",
     tags: ["spiritual", "photogenic"],
     lat: 32.2329,
     lng: 78.1099,
@@ -352,7 +394,21 @@ export const detours: Detour[] = [
     line: side("Komic"),
   },
   {
+    name: "Demul",
+    route: "spiti",
+    tags: ["stay", "hiking", "photogenic"],
+    lat: 32.1697,
+    lng: 78.1791,
+    km: 31,
+    from: "Kaza",
+    altitude: "4,340 m",
+    note: "A high farming village on the plateau above the Spiti river, with homestays and the walking trail on to Komic.",
+    label: "right",
+    line: side("Demul"),
+  },
+  {
     name: "Hikkim",
+    route: "spiti",
     tags: ["photogenic"],
     lat: 32.2472,
     lng: 78.0999,
@@ -365,6 +421,7 @@ export const detours: Detour[] = [
   },
   {
     name: "Langza",
+    route: "spiti",
     tags: ["stay", "hiking", "spiritual", "photogenic"],
     lat: 32.2756,
     lng: 78.0858,
@@ -376,7 +433,21 @@ export const detours: Detour[] = [
     line: side("Langza"),
   },
   {
+    name: "Rangrik",
+    route: "spiti",
+    tags: ["spiritual", "photogenic"],
+    lat: 32.2556,
+    lng: 78.0238,
+    km: 8,
+    from: "Kaza",
+    altitude: "3,690 m",
+    note: "A quiet village across the Spiti river from Kaza, with its small monastery.",
+    label: "left",
+    line: side("Rangrik"),
+  },
+  {
     name: "Key Monastery",
+    route: "spiti",
     tags: ["spiritual", "photogenic"],
     lat: 32.2973,
     lng: 78.0118,
@@ -388,7 +459,34 @@ export const detours: Detour[] = [
     line: side("Key"),
   },
   {
+    name: "Gete",
+    route: "spiti",
+    tags: ["hiking", "photogenic"],
+    lat: 32.3026,
+    lng: 78.0196,
+    km: 6,
+    from: "Kibber",
+    altitude: "4,310 m",
+    note: "A handful of houses high above Key Monastery, on the back road to Tashigang.",
+    label: "right",
+    line: side("Gete"),
+  },
+  {
+    name: "Tashigang",
+    route: "spiti",
+    tags: ["hiking", "photogenic"],
+    lat: 32.2939,
+    lng: 78.0546,
+    km: 13,
+    from: "Kibber",
+    altitude: "4,420 m",
+    note: "A tiny village on the high road from Gete, looking out over the Spiti valley.",
+    label: "right",
+    line: side("Tashigang"),
+  },
+  {
     name: "Chicham Bridge",
+    route: "spiti",
     tags: ["photogenic"],
     lat: 32.3431,
     lng: 77.997,
@@ -401,6 +499,7 @@ export const detours: Detour[] = [
   },
   {
     name: "Chandratal Lake",
+    route: "manali",
     tags: ["stay", "hiking", "photogenic"],
     lat: 32.4747,
     lng: 77.6171,
@@ -411,5 +510,58 @@ export const detours: Detour[] = [
     label: "top",
     // Traced from OpenStreetMap: the lake road from the Kunzum road, then the footpath to the shore.
     line: side("Chandratal"),
+  },
+  {
+    name: "Sissu",
+    route: "manali",
+    tags: ["stay", "photogenic"],
+    lat: 32.4689,
+    lng: 77.1323,
+    km: 10,
+    from: "Atal Tunnel",
+    altitude: "3,010 m",
+    note: "A Lahaul village on the Chandra river, with a tall waterfall across the valley. The road passes through it just beyond the tunnel's north end.",
+    label: "top",
+    // On the main road itself, so there's no side road to draw.
+    line: [],
+  },
+  {
+    name: "Keylong",
+    route: "manali",
+    tags: ["stay", "spiritual", "photogenic"],
+    lat: 32.5718,
+    lng: 77.0281,
+    km: 41,
+    from: "Atal Tunnel",
+    altitude: "3,080 m",
+    note: "The headquarters of Lahaul, on the Manali–Leh highway, with the Kardang and Shashur monasteries on the slopes around it.",
+    label: "left",
+    line: side("Keylong"),
+  },
+  {
+    name: "Kasol",
+    route: "manali",
+    tags: ["stay", "hiking"],
+    lat: 32.0104,
+    lng: 77.3166,
+    km: 30,
+    from: "Bhuntar",
+    altitude: "1,580 m",
+    note: "A riverside village in the Parvati valley, among pines, cafés and trailheads.",
+    label: "bottom",
+    line: side("Kasol"),
+  },
+  {
+    name: "Tosh",
+    route: "manali",
+    tags: ["stay", "hiking", "photogenic"],
+    lat: 32.0144,
+    lng: 77.4519,
+    km: 50,
+    from: "Bhuntar",
+    altitude: "2,400 m",
+    note: "A village at the head of the Parvati valley road, beneath snow peaks. The last stretch from Barshaini is steep.",
+    label: "right",
+    line: side("Tosh"),
   },
 ];

@@ -3,7 +3,6 @@ import { pageMetadata } from "@/lib/seo";
 import { EntryReady } from "@/components/loading/EntryExperience";
 import { HomeMotion } from "@/components/home/HomeMotion";
 import { FieldGuide } from "@/components/field-guide/FieldGuide";
-import { house } from "@/content/house";
 import { guideCategories, type GuideCategory } from "@/content/field-guide";
 
 export const metadata = pageMetadata({
@@ -24,9 +23,8 @@ export default function Page() {
           <p className="home-kicker">Field guide</p>
           <h1 id="field-guide-title">What lives around Kibber</h1>
           <p>
-            Snow leopards and ibex, lammergeiers overhead, blue poppies in the scree,
-            barley on the terraces and fossils from an ancient sea, all within reach of
-            the house at {house.altitude}, with the months to look for each.
+            Snow leopards on the ridges, lammergeiers overhead, fossils underfoot.
+            Here&rsquo;s what to look for, and when.
           </p>
         </div>
         <nav className="gallery-nav" aria-label="Field guide sections" data-reveal="fade">

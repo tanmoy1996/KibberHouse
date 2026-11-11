@@ -11,7 +11,7 @@ import { RouteMap } from "@/components/routes/RouteMap";
 export const metadata = pageMetadata({
   title: "Routes to Kibber",
   description:
-    "The Spiti circuit to Kibber House: up from Chandigarh through Shimla and Kinnaur, back over Kunzum Pass and the Atal Tunnel to Manali, with the places on the way, side trips to Chandratal Lake, Chitkul, Kalpa, Pin Valley, Dhankar, Key, Langza, Hikkim and Komic, and other routes from Delhi and Bhuntar.",
+    "The Spiti circuit to Kibber House: up from Chandigarh through Shimla and Kinnaur, back over Kunzum Pass and the Atal Tunnel to Manali, with the places on the way, side trips to Chandratal Lake, Chitkul, Sangla, Kalpa, the Pin valley, Dhankar, Key, Langza, Hikkim, Komic, Sissu, Keylong and the Parvati valley, and other routes from Delhi and Bhuntar.",
   path: "/routes",
 });
 
@@ -46,7 +46,6 @@ export default function Page() {
           <p className="home-kicker">Routes</p>
           <h1 id="routes-page-title">The road to Kibber</h1>
           <p>
-            {house.altitude} in the Spiti Valley, {house.distanceFromKaza} above Kaza.
             Every road here climbs through river gorges, high passes and old
             monastery villages.
           </p>

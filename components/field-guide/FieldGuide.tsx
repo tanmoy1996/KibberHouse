@@ -5,6 +5,7 @@ import { useDeferredValue, useMemo, useState } from "react";
 import {
   guideCategories,
   guideEntries,
+  guideMonthLabels,
   guideSectionTitles,
   type GuideCategory,
   type GuideEntry,
@@ -147,6 +148,7 @@ export function FieldGuide() {
 
 function GuideCard({ entry }: { entry: GuideEntry }) {
   const { photo } = entry;
+  const labels = guideMonthLabels[entry.category];
   return (
     <li className="guide-card">
       <figure className="guide-card__media">
@@ -184,33 +186,35 @@ function GuideCard({ entry }: { entry: GuideEntry }) {
         <p className="guide-card__where">
           <span>Where</span> {entry.where}
         </p>
-        <div className="guide-card__months">
-          <ol aria-hidden="true">
-            {MONTHS.map((label, i) => {
-              const month = i + 1;
-              const seen = entry.months.includes(month);
-              const best = entry.best?.includes(month);
-              return (
-                <li
-                  key={label}
-                  data-seen={seen || undefined}
-                  data-best={best || undefined}
-                  title={`${label}: ${best ? "best" : seen ? "seen" : "not seen"}`}
-                >
-                  {label[0]}
-                </li>
-              );
-            })}
-          </ol>
-          <p className="sr-only">
-            Seen {describeMonths(entry.months)}
-            {entry.best ? `; best ${describeMonths(entry.best)}` : ""}.
-          </p>
-          <p className="guide-card__key" aria-hidden="true">
-            <span data-seen>Seen</span>
-            {entry.best && <span data-best>Best</span>}
-          </p>
-        </div>
+        {labels && (
+          <div className="guide-card__months">
+            <ol aria-hidden="true">
+              {MONTHS.map((label, i) => {
+                const month = i + 1;
+                const seen = entry.months.includes(month);
+                const best = entry.best?.includes(month);
+                return (
+                  <li
+                    key={label}
+                    data-seen={seen || undefined}
+                    data-best={best || undefined}
+                    title={`${label}: ${best ? labels.best.toLowerCase() : seen ? labels.seen.toLowerCase() : "not seen"}`}
+                  >
+                    {label[0]}
+                  </li>
+                );
+              })}
+            </ol>
+            <p className="sr-only">
+              {labels.seen} {describeMonths(entry.months)}
+              {entry.best ? `; ${labels.best.toLowerCase()} ${describeMonths(entry.best)}` : ""}.
+            </p>
+            <p className="guide-card__key" aria-hidden="true">
+              <span data-seen>{labels.seen}</span>
+              {entry.best && <span data-best>{labels.best}</span>}
+            </p>
+          </div>
+        )}
       </div>
     </li>
   );
